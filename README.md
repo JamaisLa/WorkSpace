@@ -28,3 +28,16 @@ Gérer les salles, les équipements et les réservations d’une entreprise.
 - Spring Data JPA
 - H2
 - Maven
+
+## Développement local
+
+Prérequis : Java 21.
+
+Sous Linux/macOS :
+
+```bash
+./mvnw spring-boot:run
+
+Sous Windows :
+
+mvnw.cmd spring-boot:run
