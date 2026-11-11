@@ -39,6 +39,7 @@ Sous Linux/macOS :
 ```bash
 npm ci 
 ./mvnw spring-boot:run
+```
 
 Sous Windows :
 
