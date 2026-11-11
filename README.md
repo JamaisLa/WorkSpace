@@ -37,7 +37,7 @@ Prérequis : Java 21.
 Sous Linux/macOS :
 
 ```bash
-npm install
+npm ci 
 ./mvnw spring-boot:run
 
 Sous Windows :
