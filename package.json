@@ -1,0 +1,30 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "Gérer les salles, les équipements et les réservations d’une entreprise.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./src/main/tailwind/input.css -o ./src/main/resources/static/css/style.css --minify",
+    "watch:css": "tailwindcss -i ./src/main/tailwind/input.css -o ./src/main/resources/static/css/style.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamaisLa/WorkSpace.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JamaisLa/WorkSpace/issues"
+  },
+  "homepage": "https://github.com/JamaisLa/WorkSpace#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.5",
+    "tailwindcss": "^4.3.5"
+  }
+}

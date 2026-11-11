@@ -25,6 +25,7 @@ Gérer les salles, les équipements et les réservations d’une entreprise.
 - Java 21
 - Spring Boot
 - Spring MVC et Thymeleaf
+- Tailwind
 - Spring Data JPA
 - H2
 - Maven
@@ -36,6 +37,7 @@ Prérequis : Java 21.
 Sous Linux/macOS :
 
 ```bash
+npm install
 ./mvnw spring-boot:run
 
 Sous Windows :
