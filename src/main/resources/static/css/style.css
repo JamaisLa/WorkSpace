@@ -1,5 +1,4 @@
 /*! tailwindcss v4.3.5 | MIT License | https://tailwindcss.com */
-@layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -8,15 +7,6 @@
       "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-amber-800: oklch(47.3% 0.137 46.201);
-    --color-amber-950: oklch(27.9% 0.077 45.635);
-    --color-blue-600: oklch(54.6% 0.245 262.881);
-    --color-slate-50: oklch(98.4% 0.003 247.858);
-    --color-slate-900: oklch(20.8% 0.042 265.755);
-    --spacing: 0.25rem;
-    --text-3xl: 1.875rem;
-    --text-3xl--line-height: calc(2.25 / 1.875);
-    --font-weight-bold: 700;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -173,41 +163,102 @@
   .static {
     position: static;
   }
-  .min-h-screen {
-    min-height: 100vh;
-  }
-  .bg-amber-950 {
-    background-color: var(--color-amber-950);
-  }
-  .bg-slate-50 {
-    background-color: var(--color-slate-50);
-  }
-  .p-8 {
-    padding: calc(var(--spacing) * 8);
-  }
-  .text-3xl {
-    font-size: var(--text-3xl);
-    line-height: var(--tw-leading, var(--text-3xl--line-height));
-  }
-  .font-bold {
-    --tw-font-weight: var(--font-weight-bold);
-    font-weight: var(--font-weight-bold);
-  }
-  .text-blue-600 {
-    color: var(--color-blue-600);
-  }
-  .text-slate-900 {
-    color: var(--color-slate-900);
-  }
 }
-@property --tw-font-weight {
-  syntax: "*";
-  inherits: false;
+:root {
+  color: #1e293b;
+  background: #f1f5f9;
+  font-family: system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
-@layer properties {
-  @supports ((-webkit-hyphens: none) and (not (margin-trim: block))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
-    *, ::before, ::after, ::backdrop {
-      --tw-font-weight: initial;
-    }
+* {
+  box-sizing: border-box;
+}
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  padding: 2rem 1rem;
+}
+main {
+  width: min(100%, 34rem);
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+h1 {
+  margin: 0 0 1.25rem;
+  color: #1d4ed8;
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+p {
+  line-height: 1.5;
+}
+form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+form div {
+  display: grid;
+  gap: 0.35rem;
+}
+label {
+  font-weight: 600;
+}
+input {
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+input:focus-visible {
+  outline: 3px solid #bfdbfe;
+  border-color: #2563eb;
+}
+button, .button-link {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: #2563eb;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+button:hover, .button-link:hover {
+  background: #1d4ed8;
+}
+a {
+  color: #1d4ed8;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.field-error, .error-message {
+  margin: 0;
+  color: #b91c1c;
+  font-size: 0.9rem;
+}
+.success-message {
+  color: #166534;
+}
+@media (max-width: 480px) {
+  main {
+    margin: 0 auto;
+    padding: 1.25rem;
   }
 }
