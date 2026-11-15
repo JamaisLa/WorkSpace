@@ -8,6 +8,7 @@ Gérer les salles, les équipements et les réservations d’une entreprise.
 - Employé : consulte les salles et réserve un créneau.
 
 ## Fonctionnalités
+- Inscription publique et connexion des employés ; l’inscription attribue le rôle `EMPLOYE`.
 - Gérer les départements et les employés.
 - Gérer les salles et leurs équipements.
 - Réserver une ou plusieurs salles.
