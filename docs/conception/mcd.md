@@ -13,6 +13,7 @@ erDiagram
         texte email UK
         texte telephone
         texte motDePasseHash
+        texte role
     }
     SALLE {
         identifiant idSalle PK
@@ -50,6 +51,7 @@ erDiagram
 ## Règles essentielles
 
 - Chaque employé a un compte. Son email unique sert d’identifiant ; le mot de passe est stocké sous forme hachée.
+- L’inscription publique attribue toujours le rôle `EMPLOYE`. Le rôle `ADMIN` ne peut pas être choisi à l’inscription.
 - Un employé peut ne pas être rattaché à un département.
 - Une réservation concerne une seule salle et un seul employé. Seul le nombre de participants est enregistré pour l’instant.
 - La fin d’une réservation doit être après son début. Le nombre de participants doit être positif et ne pas dépasser la capacité de la salle.

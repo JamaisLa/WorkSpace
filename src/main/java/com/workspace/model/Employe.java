@@ -1,0 +1,89 @@
+package com.workspace.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+@Entity
+@Table(name = "employe")
+public class Employe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
+    private String nom;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
+    private String prenom;
+
+    @NotBlank
+    @Email
+    @Size(max = 254)
+    @Column(nullable = false, unique = true, length = 254)
+    private String email;
+
+    @Size(max = 30)
+    @Column(length = 30)
+    private String telephone;
+
+    @Column(nullable = false)
+    private String motDePasseHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private RoleEmploye role;
+
+    protected Employe() {
+    }
+
+    public Employe(String nom, String prenom, String email, String telephone,
+                   String motDePasseHash, RoleEmploye role) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.telephone = telephone;
+        this.motDePasseHash = motDePasseHash;
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public String getMotDePasseHash() {
+        return motDePasseHash;
+    }
+
+    public RoleEmploye getRole() {
+        return role;
+    }
+}
