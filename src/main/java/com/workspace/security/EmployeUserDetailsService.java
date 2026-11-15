@@ -17,11 +17,11 @@ public class EmployeUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Employe employe = employeRepository.findByEmailIgnoreCase(email)
+    public UserDetails loadUserByUsername(String identifiant) throws UsernameNotFoundException {
+        Employe employe = employeRepository.findByIdentifiantConnexionIgnoreCase(identifiant)
                 .orElseThrow(() -> new UsernameNotFoundException("Compte introuvable"));
 
-        return User.withUsername(employe.getEmail())
+        return User.withUsername(employe.getIdentifiantConnexion())
                 .password(employe.getMotDePasseHash())
                 .roles(employe.getRole().name())
                 .build();

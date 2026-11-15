@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/connexion")
                         .loginProcessingUrl("/connexion")
-                        .usernameParameter("email")
+                        .usernameParameter("identifiant")
                         .passwordParameter("motDePasse")
                         .defaultSuccessUrl("/", true)
                         .permitAll())

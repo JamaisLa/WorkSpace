@@ -35,6 +35,8 @@ Gérer les salles, les équipements et les réservations d’une entreprise.
 
 Prérequis : Java 21.
 
+Compte administrateur initial : identifiant `admin`, mot de passe `admin`.
+
 Sous Linux/macOS :
 
 ```bash

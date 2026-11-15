@@ -10,11 +10,11 @@
 <main class="mx-auto max-w-xl">
     <h1 class="text-3xl font-bold text-blue-600">Se connecter</h1>
     <p th:if="${param.inscription}">Compte créé. Tu peux te connecter.</p>
-    <p th:if="${param.error}">Email ou mot de passe incorrect.</p>
+    <p th:if="${param.error}">Identifiant ou mot de passe incorrect.</p>
     <form th:action="@{/connexion}" method="post">
         <div>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="username" required>
+            <label for="identifiant">Email ou identifiant</label>
+            <input id="identifiant" name="identifiant" autocomplete="username" required>
         </div>
         <div>
             <label for="motDePasse">Mot de passe</label>

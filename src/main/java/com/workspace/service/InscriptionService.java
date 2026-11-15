@@ -31,6 +31,7 @@ public class InscriptionService {
                 form.getNom().trim(),
                 form.getPrenom().trim(),
                 email,
+                email,
                 form.getTelephone() == null || form.getTelephone().isBlank()
                         ? null : form.getTelephone().trim(),
                 passwordEncoder.encode(form.getMotDePasse()),

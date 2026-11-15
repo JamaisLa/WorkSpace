@@ -35,6 +35,11 @@ public class Employe {
     @Column(nullable = false, unique = true, length = 254)
     private String email;
 
+    @NotBlank
+    @Size(max = 254)
+    @Column(nullable = false, unique = true, length = 254)
+    private String identifiantConnexion;
+
     @Size(max = 30)
     @Column(length = 30)
     private String telephone;
@@ -49,11 +54,12 @@ public class Employe {
     protected Employe() {
     }
 
-    public Employe(String nom, String prenom, String email, String telephone,
+    public Employe(String nom, String prenom, String email, String identifiantConnexion, String telephone,
                    String motDePasseHash, RoleEmploye role) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
+        this.identifiantConnexion = identifiantConnexion;
         this.telephone = telephone;
         this.motDePasseHash = motDePasseHash;
         this.role = role;
@@ -73,6 +79,10 @@ public class Employe {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getIdentifiantConnexion() {
+        return identifiantConnexion;
     }
 
     public String getTelephone() {
