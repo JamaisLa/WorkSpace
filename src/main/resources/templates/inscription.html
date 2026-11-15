@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Créer un compte — WorkSpace Lite</title>
+</head>
+<body>
+<main>
+    <h1>Créer un compte employé</h1>
+    <form th:action="@{/inscription}" th:object="${inscription}" method="post">
+        <p class="error-message" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+        <div>
+            <label for="nom">Nom</label>
+            <input id="nom" th:field="*{nom}" autocomplete="family-name" required>
+            <p class="field-error" th:errors="*{nom}"></p>
+        </div>
+        <div>
+            <label for="prenom">Prénom</label>
+            <input id="prenom" th:field="*{prenom}" autocomplete="given-name" required>
+            <p class="field-error" th:errors="*{prenom}"></p>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" th:field="*{email}" autocomplete="email" required>
+            <p class="field-error" th:errors="*{email}"></p>
+        </div>
+        <div>
+            <label for="telephone">Téléphone</label>
+            <input id="telephone" type="tel" th:field="*{telephone}" autocomplete="tel">
+            <p class="field-error" th:errors="*{telephone}"></p>
+        </div>
+        <div>
+            <label for="motDePasse">Mot de passe (8 caractères minimum)</label>
+            <input id="motDePasse" type="password" th:field="*{motDePasse}" autocomplete="new-password" minlength="8" required>
+            <p class="field-error" th:errors="*{motDePasse}"></p>
+        </div>
+        <div>
+            <label for="confirmation">Confirmer le mot de passe</label>
+            <input id="confirmation" type="password" th:field="*{confirmation}" autocomplete="new-password" required>
+            <p class="field-error" th:errors="*{confirmation}"></p>
+        </div>
+        <button type="submit">Créer mon compte</button>
+    </form>
+    <p><a th:href="@{/connexion}">J’ai déjà un compte</a></p>
+    <p><a th:href="@{/}">Retour à l’accueil</a></p>
+</main>
+</body>
+</html>
