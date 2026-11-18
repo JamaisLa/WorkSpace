@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/salles.css}">
+    <title>Supprimer une salle</title>
+</head>
+<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<main class="room-page max-w-2xl space-y-6">
+    <p th:if="${success}" th:text="${success}" role="status" class="room-success"></p>
+    <a th:href="@{/salles/{id}(id=${salle.id})}" class="text-link text-sm">Retour à la salle</a>
+    <h1 class="page-title">Supprimer cette salle ?</h1>
+    <section class="panel p-6 sm:p-8" aria-label="Confirmation de suppression">
+        <p class="leading-7 text-slate-600">Vous allez supprimer <strong class="break-words text-slate-900" th:text="${salle.nom}"></strong>. Cette action est définitive.</p>
+        <form method="post" th:action="@{/salles/{id}/supprimer(id=${salle.id})}" class="mt-7 flex flex-wrap gap-3">
+            <button type="submit" class="btn-danger">Supprimer définitivement</button>
+            <a th:href="@{/salles/{id}(id=${salle.id})}" class="btn-secondary">Annuler</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/salles.css}">
+    <title>Détails de la salle</title>
+</head>
+<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<main class="room-page space-y-7">
+    <p th:if="${success}" th:text="${success}" role="status" class="room-success"></p>
+    <a th:href="@{/salles}" class="text-link text-sm">Retour aux salles</a>
+    <div class="flex flex-wrap items-start justify-between gap-5">
+        <div class="min-w-0">
+            <h1 class="page-title break-words" th:text="${salle.nom}"></h1>
+            <p class="mt-3 break-words text-slate-500" th:text="${salle.localisation}"></p>
+        </div>
+        <a th:if="${admin}" th:href="@{/salles/{id}/modifier(id=${salle.id})}" class="btn-primary">Modifier la salle</a>
+    </div>
+    <section class="panel p-6 sm:p-8" aria-labelledby="informations-title">
+        <h2 id="informations-title" class="text-lg font-semibold">Informations de la salle</h2>
+        <dl class="mt-6 grid gap-6 sm:grid-cols-2">
+            <div><dt class="text-sm text-slate-500">Capacité d’accueil</dt><dd class="mt-2 text-2xl font-semibold"><span th:text="${salle.capacite}"></span> <span class="text-base font-normal text-slate-500">personnes</span></dd></div>
+            <div><dt class="text-sm text-slate-500">Localisation</dt><dd class="mt-2 break-words font-medium" th:text="${salle.localisation}"></dd></div>
+        </dl>
+    </section>
+    <a th:if="${admin}" th:href="@{/salles/{id}/supprimer(id=${salle.id})}" class="btn-danger">Supprimer la salle</a>
+</main>
+</body>
+</html>

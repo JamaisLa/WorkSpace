@@ -2,6 +2,7 @@ package com.workspace.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,10 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/inscription", "/connexion", "/css/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/salles/nouveau", "/salles/*/modifier",
+                                "/salles/*/supprimer").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/salles", "/salles/{id:[0-9]+}").authenticated()
+                        .requestMatchers("/salles", "/salles/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/connexion")
