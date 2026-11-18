@@ -6,18 +6,18 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>WorkSpace Lite</title>
 </head>
-<body>
-<main>
-    <h1>WorkSpace Lite</h1>
+<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<main class="mx-auto w-full max-w-[34rem] rounded-xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-900/10 min-[481px]:my-8 min-[481px]:p-8">
+    <h1 class="mb-5 text-3xl leading-tight text-blue-700">WorkSpace Lite</h1>
     <p>Gérez vos espaces de travail et vos réservations.</p>
-    <nav th:unless="${loggedIn}" aria-label="Compte">
-        <a class="button-link" th:href="@{/inscription}">Créer un compte</a>
-        <a class="button-link" th:href="@{/connexion}">Se connecter</a>
+    <nav class="mt-6 flex flex-wrap gap-3" th:unless="${loggedIn}" aria-label="Compte">
+        <a class="inline-block w-fit cursor-pointer rounded-md bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" th:href="@{/inscription}">Créer un compte</a>
+        <a class="inline-block w-fit cursor-pointer rounded-md bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" th:href="@{/connexion}">Se connecter</a>
     </nav>
     <div th:if="${loggedIn}">
         <p>Connecté avec <span th:text="${email}"></span></p>
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">Se déconnecter</button>
+        <form class="mt-6 grid gap-4" th:action="@{/logout}" method="post">
+            <button class="inline-block w-fit cursor-pointer rounded-md bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" type="submit">Se déconnecter</button>
         </form>
     </div>
 </main>

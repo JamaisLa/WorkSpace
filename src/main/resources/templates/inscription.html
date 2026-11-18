@@ -6,45 +6,45 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Créer un compte — WorkSpace Lite</title>
 </head>
-<body>
-<main>
-    <h1>Créer un compte employé</h1>
-    <form th:action="@{/inscription}" th:object="${inscription}" method="post">
-        <p class="error-message" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
-        <div>
-            <label for="nom">Nom</label>
-            <input id="nom" th:field="*{nom}" autocomplete="family-name" required>
-            <p class="field-error" th:errors="*{nom}"></p>
+<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<main class="mx-auto w-full max-w-[34rem] rounded-xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-900/10 min-[481px]:my-8 min-[481px]:p-8">
+    <h1 class="mb-5 text-3xl leading-tight text-blue-700">Créer un compte employé</h1>
+    <form class="mt-6 grid gap-4" th:action="@{/inscription}" th:object="${inscription}" method="post">
+        <p class="text-sm text-red-700" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="nom">Nom</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="nom" th:field="*{nom}" autocomplete="family-name" required>
+            <p class="text-sm text-red-700" th:errors="*{nom}"></p>
         </div>
-        <div>
-            <label for="prenom">Prénom</label>
-            <input id="prenom" th:field="*{prenom}" autocomplete="given-name" required>
-            <p class="field-error" th:errors="*{prenom}"></p>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="prenom">Prénom</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="prenom" th:field="*{prenom}" autocomplete="given-name" required>
+            <p class="text-sm text-red-700" th:errors="*{prenom}"></p>
         </div>
-        <div>
-            <label for="email">Email</label>
-            <input id="email" type="email" th:field="*{email}" autocomplete="email" required>
-            <p class="field-error" th:errors="*{email}"></p>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="email">Email</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="email" type="email" th:field="*{email}" autocomplete="email" required>
+            <p class="text-sm text-red-700" th:errors="*{email}"></p>
         </div>
-        <div>
-            <label for="telephone">Téléphone</label>
-            <input id="telephone" type="tel" th:field="*{telephone}" autocomplete="tel">
-            <p class="field-error" th:errors="*{telephone}"></p>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="telephone">Téléphone</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="telephone" type="tel" th:field="*{telephone}" autocomplete="tel">
+            <p class="text-sm text-red-700" th:errors="*{telephone}"></p>
         </div>
-        <div>
-            <label for="motDePasse">Mot de passe (8 caractères minimum)</label>
-            <input id="motDePasse" type="password" th:field="*{motDePasse}" autocomplete="new-password" minlength="8" required>
-            <p class="field-error" th:errors="*{motDePasse}"></p>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="motDePasse">Mot de passe (8 caractères minimum)</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="motDePasse" type="password" th:field="*{motDePasse}" autocomplete="new-password" minlength="8" required>
+            <p class="text-sm text-red-700" th:errors="*{motDePasse}"></p>
         </div>
-        <div>
-            <label for="confirmation">Confirmer le mot de passe</label>
-            <input id="confirmation" type="password" th:field="*{confirmation}" autocomplete="new-password" required>
-            <p class="field-error" th:errors="*{confirmation}"></p>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="confirmation">Confirmer le mot de passe</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="confirmation" type="password" th:field="*{confirmation}" autocomplete="new-password" required>
+            <p class="text-sm text-red-700" th:errors="*{confirmation}"></p>
         </div>
-        <button type="submit">Créer mon compte</button>
+        <button class="inline-block w-fit cursor-pointer rounded-md bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" type="submit">Créer mon compte</button>
     </form>
-    <p><a th:href="@{/connexion}">J’ai déjà un compte</a></p>
-    <p><a th:href="@{/}">Retour à l’accueil</a></p>
+    <p><a class="text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2" th:href="@{/connexion}">J’ai déjà un compte</a></p>
+    <p><a class="text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2" th:href="@{/}">Retour à l’accueil</a></p>
 </main>
 </body>
 </html>
