@@ -19,6 +19,10 @@ public class SecurityConfig {
                                 "/salles/*/supprimer").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/salles", "/salles/{id:[0-9]+}").authenticated()
                         .requestMatchers("/salles", "/salles/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/types-equipement/nouveau",
+                                "/types-equipement/*/modifier", "/types-equipement/*/supprimer").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/types-equipement").authenticated()
+                        .requestMatchers("/types-equipement", "/types-equipement/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/connexion")

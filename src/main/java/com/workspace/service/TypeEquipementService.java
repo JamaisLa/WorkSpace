@@ -1,6 +1,7 @@
 package com.workspace.service;
 
 import com.workspace.dto.TypeEquipementForm;
+import com.workspace.dto.TypeEquipementResume;
 import com.workspace.model.TypeEquipement;
 import com.workspace.repository.TypeEquipementRepository;
 import jakarta.validation.Valid;
@@ -23,17 +24,25 @@ public class TypeEquipementService {
         this.repository = repository;
     }
 
-    public List<TypeEquipement> lister() {
-        return repository.findAllByOrderByNomAsc();
+    public List<TypeEquipementResume> lister() {
+        return repository.findAllByOrderByNomAsc().stream()
+                .map(TypeEquipementService::resume)
+                .toList();
     }
 
-    public TypeEquipement consulter(Long id) {
-        return trouver(id);
+    public TypeEquipementResume consulter(Long id) {
+        return resume(trouver(id));
+    }
+
+    public TypeEquipementForm preparerModification(Long id) {
+        TypeEquipementForm form = new TypeEquipementForm();
+        form.setNom(trouver(id).getNom());
+        return form;
     }
 
     @Transactional
-    public Long creer(@NotNull @Valid TypeEquipementForm form) {
-        return repository.save(new TypeEquipement(form.getNom())).getId();
+    public void creer(@NotNull @Valid TypeEquipementForm form) {
+        repository.save(new TypeEquipement(form.getNom()));
     }
 
     @Transactional
@@ -49,5 +58,9 @@ public class TypeEquipementService {
     private TypeEquipement trouver(Long id) {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Type d’équipement introuvable"));
+    }
+
+    private static TypeEquipementResume resume(TypeEquipement type) {
+        return new TypeEquipementResume(type.getId(), type.getNom());
     }
 }
