@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TypeEquipementRepository extends JpaRepository<TypeEquipement, Long> {
     List<TypeEquipement> findAllByOrderByNomAsc();
+
+    boolean existsByNomIgnoreCase(String nom);
 }

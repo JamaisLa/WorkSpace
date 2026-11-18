@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/salles.css}">
+    <title th:text="${modification ? 'Modifier un équipement' : 'Ajouter un équipement'}">Équipement</title>
+</head>
+<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<main class="room-page max-w-2xl space-y-6">
+    <a th:href="${modification} ? @{/equipements/{id}(id=${equipementId})} : @{/equipements}" class="text-link text-sm">Retour</a>
+    <h1 class="page-title" th:text="${modification ? 'Modifier l’équipement' : 'Ajouter un équipement'}"></h1>
+    <form method="post"
+          th:action="${modification} ? @{/equipements/{id}(id=${equipementId})} : @{/equipements}"
+          th:object="${equipementForm}" class="panel grid gap-5 p-6 sm:p-8">
+        <div th:if="${#fields.hasGlobalErrors()}" role="alert" class="text-sm text-red-800">
+            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+        </div>
+        <div>
+            <label for="nom" class="field-label">Nom (obligatoire)</label>
+            <input id="nom" th:field="*{nom}" class="field" th:errorclass="field-invalid" required maxlength="100">
+            <p th:errors="*{nom}" class="field-error"></p>
+        </div>
+        <div>
+            <label for="reference" class="field-label">Référence unique (obligatoire)</label>
+            <input id="reference" th:field="*{reference}" class="field" th:errorclass="field-invalid" required maxlength="100">
+            <p th:errors="*{reference}" class="field-error"></p>
+        </div>
+        <div>
+            <label for="typeEquipementId" class="field-label">Type (obligatoire)</label>
+            <select id="typeEquipementId" th:field="*{typeEquipementId}" class="field" th:errorclass="field-invalid" required>
+                <option value="">Choisir un type</option>
+                <option th:each="type : ${types}" th:value="${type.id}" th:text="${type.nom}"></option>
+            </select>
+            <p th:errors="*{typeEquipementId}" class="field-error"></p>
+        </div>
+        <div>
+            <label for="mobilite" class="field-label">Installation (obligatoire)</label>
+            <select id="mobilite" th:field="*{mobilite}" class="field" th:errorclass="field-invalid" required>
+                <option value="">Choisir une option</option>
+                <option th:each="option : ${mobilites}" th:value="${option}" th:text="${option.libelle}"></option>
+            </select>
+            <p th:errors="*{mobilite}" class="field-error"></p>
+        </div>
+        <div>
+            <label for="salleId" class="field-label">Salle (obligatoire si l’équipement est fixe)</label>
+            <select id="salleId" th:field="*{salleId}" class="field" th:errorclass="field-invalid">
+                <option value="">Aucune salle</option>
+                <option th:each="salle : ${salles}" th:value="${salle.id}" th:text="${salle.nom}"></option>
+            </select>
+            <p th:errors="*{salleId}" class="field-error"></p>
+            <p th:if="${#fields.hasErrors('salleValide')}" th:errors="*{salleValide}" class="field-error"></p>
+        </div>
+        <div class="flex flex-wrap gap-3 border-t border-slate-200 pt-6">
+            <button type="submit" class="btn-primary" th:text="${modification ? 'Enregistrer' : 'Créer l’équipement'}"></button>
+            <a th:href="${modification} ? @{/equipements/{id}(id=${equipementId})} : @{/equipements}" class="btn-secondary">Annuler</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

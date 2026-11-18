@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/salles.css}">
-    <title>Supprimer un type</title>
+    <title>Supprimer un équipement</title>
 </head>
 <body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
 <main class="room-page max-w-2xl space-y-6">
-    <a th:href="@{/types-equipement}" class="text-link text-sm">Retour aux types</a>
-    <h1 class="page-title">Supprimer ce type ?</h1>
+    <a th:href="@{/equipements/{id}(id=${equipement.id})}" class="text-link text-sm">Retour à l’équipement</a>
+    <h1 class="page-title">Supprimer cet équipement ?</h1>
     <section class="panel p-6 sm:p-8" aria-label="Confirmation de suppression">
         <p class="leading-7 text-slate-600">
-            Vous allez supprimer <strong class="text-slate-900" th:text="${type.nom}"></strong>.
+            Vous allez supprimer <strong class="text-slate-900" th:text="${equipement.nom}"></strong>.
             Cette action est définitive.
         </p>
-        <form method="post" th:action="@{/types-equipement/{id}/supprimer(id=${type.id})}"
+        <form method="post" th:action="@{/equipements/{id}/supprimer(id=${equipement.id})}"
               class="mt-7 flex flex-wrap gap-3">
             <button type="submit" class="btn-danger">Supprimer définitivement</button>
-            <a th:href="@{/types-equipement}" class="btn-secondary">Annuler</a>
+            <a th:href="@{/equipements/{id}(id=${equipement.id})}" class="btn-secondary">Annuler</a>
         </form>
     </section>
 </main>
