@@ -6,9 +6,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Connexion — WorkSpace Lite</title>
 </head>
-<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
-<main class="mx-auto w-full max-w-[34rem] rounded-xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-900/10 min-[481px]:my-8 min-[481px]:p-8">
-    <h1 class="mb-5 text-3xl leading-tight text-blue-700">Se connecter</h1>
+<body class="site-body">
+<main class="site-card">
+    <h1 class="site-title">Se connecter</h1>
     <p class="text-green-800" th:if="${param.inscription}">Compte créé. Tu peux te connecter.</p>
     <p class="text-sm text-red-700" th:if="${param.error}">Identifiant ou mot de passe incorrect.</p>
     <form class="mt-6 grid gap-4" th:action="@{/connexion}" method="post">
@@ -20,10 +20,10 @@
             <label class="font-semibold" for="motDePasse">Mot de passe</label>
             <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="motDePasse" name="motDePasse" type="password" autocomplete="current-password" required>
         </div>
-        <button class="inline-block w-fit cursor-pointer rounded-md bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" type="submit">Se connecter</button>
+        <button class="site-button w-full" type="submit">Se connecter</button>
     </form>
-    <p><a class="text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2" th:href="@{/inscription}">Créer un compte employé</a></p>
-    <p><a class="text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2" th:href="@{/}">Retour à l’accueil</a></p>
+    <p><a class="site-inline-link" th:href="@{/inscription}">Créer un compte employé</a></p>
+    <p><a class="site-inline-link" th:href="@{/}">Retour à l’accueil</a></p>
 </main>
 </body>
 </html>

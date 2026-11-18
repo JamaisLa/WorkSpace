@@ -6,9 +6,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Créer un compte — WorkSpace Lite</title>
 </head>
-<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
-<main class="mx-auto w-full max-w-[34rem] rounded-xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-900/10 min-[481px]:my-8 min-[481px]:p-8">
-    <h1 class="mb-5 text-3xl leading-tight text-blue-700">Créer un compte employé</h1>
+<body class="site-body">
+<main class="site-card">
+    <h1 class="site-title">Créer un compte employé</h1>
     <form class="mt-6 grid gap-4" th:action="@{/inscription}" th:object="${inscription}" method="post">
         <p class="text-sm text-red-700" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
         <div class="grid gap-1.5">
@@ -41,10 +41,10 @@
             <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="confirmation" type="password" th:field="*{confirmation}" autocomplete="new-password" required>
             <p class="text-sm text-red-700" th:errors="*{confirmation}"></p>
         </div>
-        <button class="inline-block w-fit cursor-pointer rounded-md bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" type="submit">Créer mon compte</button>
+        <button class="site-button w-full" type="submit">Créer mon compte</button>
     </form>
-    <p><a class="text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2" th:href="@{/connexion}">J’ai déjà un compte</a></p>
-    <p><a class="text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2" th:href="@{/}">Retour à l’accueil</a></p>
+    <p><a class="site-inline-link" th:href="@{/connexion}">J’ai déjà un compte</a></p>
+    <p><a class="site-inline-link" th:href="@{/}">Retour à l’accueil</a></p>
 </main>
 </body>
 </html>

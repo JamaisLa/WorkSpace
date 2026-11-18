@@ -1,20 +1,23 @@
 .room-page {
     display: grid;
     gap: 1.5rem;
-    max-width: 60rem;
+    max-width: 64rem;
     margin-inline: auto;
 }
 
 .room-page .panel {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 0.75rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
 }
 
 .room-page .page-title {
-    font-size: 1.875rem;
+    color: #1e3a8a;
+    font-size: clamp(1.875rem, 4vw, 2.25rem);
     line-height: 1.2;
     font-weight: 600;
+    letter-spacing: -0.025em;
 }
 
 .room-page .text-link {
@@ -29,8 +32,11 @@
     width: fit-content;
     border-radius: 0.375rem;
     padding: 0.625rem 1rem;
+    min-height: 2.75rem;
     font-weight: 600;
     cursor: pointer;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.15);
+    transition: background-color 150ms ease, box-shadow 150ms ease;
 }
 
 .room-page .btn-primary {
@@ -38,14 +44,41 @@
     color: white;
 }
 
+.room-page .btn-primary:hover {
+    background: #1e40af;
+}
+
 .room-page .btn-secondary {
     background: #e2e8f0;
     color: #1e293b;
+    border: 1px solid #cbd5e1;
+}
+
+.room-page .btn-secondary:hover {
+    background: #cbd5e1;
 }
 
 .room-page .btn-danger {
     background: #b91c1c;
     color: white;
+}
+
+.room-page .btn-danger:hover {
+    background: #991b1b;
+}
+
+.room-page .btn-primary:focus-visible,
+.room-page .btn-secondary:focus-visible,
+.room-page .btn-danger:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+.room-page .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
 }
 
 .room-page .field-label {
@@ -63,6 +96,12 @@
 
 .room-page .field-invalid {
     border-color: #b91c1c;
+}
+
+.room-page .field:focus-visible {
+    border-color: #2563eb;
+    outline: 3px solid #bfdbfe;
+    outline-offset: 1px;
 }
 
 .room-page .field-error {

@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title>Supprimer un équipement</title>
 </head>
-<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<body class="site-body">
 <main class="room-page max-w-2xl space-y-6">
     <a th:href="@{/equipements/{id}(id=${equipement.id})}" class="text-link text-sm">Retour à l’équipement</a>
     <h1 class="page-title">Supprimer cet équipement ?</h1>
@@ -17,7 +17,7 @@
             Cette action est définitive.
         </p>
         <form method="post" th:action="@{/equipements/{id}/supprimer(id=${equipement.id})}"
-              class="mt-7 flex flex-wrap gap-3">
+              class="mt-7 button-row">
             <button type="submit" class="btn-danger">Supprimer définitivement</button>
             <a th:href="@{/equipements/{id}(id=${equipement.id})}" class="btn-secondary">Annuler</a>
         </form>

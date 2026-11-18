@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title th:text="${modification ? 'Modifier un équipement' : 'Ajouter un équipement'}">Équipement</title>
 </head>
-<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<body class="site-body">
 <main class="room-page max-w-2xl space-y-6">
     <a th:href="${modification} ? @{/equipements/{id}(id=${equipementId})} : @{/equipements}" class="text-link text-sm">Retour</a>
     <h1 class="page-title" th:text="${modification ? 'Modifier l’équipement' : 'Ajouter un équipement'}"></h1>
@@ -52,7 +52,7 @@
             <p th:errors="*{salleId}" class="field-error"></p>
             <p th:if="${#fields.hasErrors('salleValide')}" th:errors="*{salleValide}" class="field-error"></p>
         </div>
-        <div class="flex flex-wrap gap-3 border-t border-slate-200 pt-6">
+        <div class="button-row border-t border-slate-200 pt-6">
             <button type="submit" class="btn-primary" th:text="${modification ? 'Enregistrer' : 'Créer l’équipement'}"></button>
             <a th:href="${modification} ? @{/equipements/{id}(id=${equipementId})} : @{/equipements}" class="btn-secondary">Annuler</a>
         </div>

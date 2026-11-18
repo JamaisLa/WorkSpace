@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title>Formulaire de salle</title>
 </head>
-<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<body class="site-body">
 <main class="room-page max-w-2xl space-y-6">
     <p th:if="${success}" th:text="${success}" role="status" class="room-success"></p>
     <a th:href="@{/salles}" class="text-link text-sm">Retour aux salles</a>
@@ -40,7 +40,7 @@
                 <p id="localisation-error" th:if="${#fields.hasErrors('localisation')}" th:errors="*{localisation}" class="field-error"></p>
             </div>
         </div>
-        <div class="mt-8 flex flex-wrap gap-3 border-t border-slate-200 pt-6">
+        <div class="mt-8 button-row border-t border-slate-200 pt-6">
             <button type="submit" class="btn-primary" th:text="${modification} ? 'Enregistrer les modifications' : 'Créer la salle'"></button>
             <a th:href="${modification} ? @{/salles/{id}(id=${salleId})} : @{/salles}" class="btn-secondary">Annuler</a>
         </div>

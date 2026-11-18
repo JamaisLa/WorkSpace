@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title>Détails de l’équipement</title>
 </head>
-<body class="min-h-screen bg-slate-100 px-4 py-8 font-sans text-slate-800">
+<body class="site-body">
 <main class="room-page space-y-7">
     <a th:href="@{/equipements}" class="text-link text-sm">Retour aux équipements</a>
     <p th:if="${success}" th:text="${success}" role="status" class="room-success"></p>
@@ -17,7 +17,7 @@
             <h1 class="page-title" th:text="${equipement.nom}"></h1>
             <p class="mt-3 text-slate-500" th:text="${equipement.reference}"></p>
         </div>
-        <div th:if="${admin}" class="flex flex-wrap gap-3">
+        <div th:if="${admin}" class="button-row">
             <a th:href="@{/equipements/{id}/modifier(id=${equipement.id})}" class="btn-primary">Modifier</a>
             <a th:href="@{/equipements/{id}/supprimer(id=${equipement.id})}" class="btn-danger">Supprimer</a>
         </div>
