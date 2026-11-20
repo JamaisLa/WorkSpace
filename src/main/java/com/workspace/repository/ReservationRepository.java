@@ -7,13 +7,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findAllByEmployeIdOrderByDateDebutDesc(Long employeId);
+    List<Reservation> findAllByEmploye_IdOrderByDateDebutDesc(Long employeId);
 
     List<Reservation> findAllByOrderByDateDebutAsc();
 
-    boolean existsBySalleIdAndDateDebutLessThanAndDateFinGreaterThan(
+    boolean existsBySalle_IdAndDateDebutLessThanAndDateFinGreaterThan(
             Long salleId, LocalDateTime dateFin, LocalDateTime dateDebut);
 
-    boolean existsBySalleIdAndDateDebutLessThanAndDateFinGreaterThanAndIdNot(
+    boolean existsBySalle_IdAndDateDebutLessThanAndDateFinGreaterThanAndIdNot(
             Long salleId, LocalDateTime dateFin, LocalDateTime dateDebut, Long reservationId);
+
+    boolean existsByEquipements_IdAndDateDebutLessThanAndDateFinGreaterThan(
+            Long equipementId, LocalDateTime dateFin, LocalDateTime dateDebut);
 }

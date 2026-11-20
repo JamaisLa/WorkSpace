@@ -2,6 +2,7 @@ package com.workspace.repository;
 
 import com.workspace.model.Equipement;
 import com.workspace.model.EtatEquipement;
+import com.workspace.model.MobiliteEquipement;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,7 @@ public interface EquipementRepository extends JpaRepository<Equipement, Long> {
     boolean existsByTypeEquipementId(Long typeEquipementId);
 
     boolean existsBySalleId(Long salleId);
+
+    List<Equipement> findAllByMobiliteAndEtatNotOrderByNomAsc(
+            MobiliteEquipement mobilite, EtatEquipement etat);
 }

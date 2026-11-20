@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/salles.css}">
+    <title>Réserver une salle — WorkSpace Lite</title>
+</head>
+<body class="site-body">
+<main class="room-page max-w-2xl space-y-6">
+    <a th:href="@{/reservations}" class="text-link text-sm">Retour à mes réservations</a>
+    <h1 class="page-title">Nouvelle réservation</h1>
+    <form method="post" th:action="@{/reservations}" th:object="${reservationForm}"
+          class="panel grid gap-5 p-6 sm:p-8">
+        <div th:if="${#fields.hasGlobalErrors()}" role="alert" class="text-sm text-red-800">
+            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+        </div>
+        <div>
+            <label for="objet" class="field-label">Objet de la réunion</label>
+            <input id="objet" th:field="*{objet}" class="field" th:errorclass="field-invalid" maxlength="200" required>
+            <p th:errors="*{objet}" class="field-error"></p>
+        </div>
+        <div>
+            <label for="salleId" class="field-label">Salle</label>
+            <select id="salleId" th:field="*{salleId}" class="field" th:errorclass="field-invalid" required>
+                <option value="">Choisir une salle</option>
+                <option th:each="salle : ${salles}" th:value="${salle.id}"
+                        th:text="${salle.nom + ' (' + salle.capacite + ' places)'}">
+                </option>
+            </select>
+            <p th:errors="*{salleId}" class="field-error"></p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+                <label for="dateDebut" class="field-label">Début</label>
+                <input id="dateDebut" type="datetime-local" th:field="*{dateDebut}"
+                       class="field" th:errorclass="field-invalid" required>
+                <p th:errors="*{dateDebut}" class="field-error"></p>
+            </div>
+            <div>
+                <label for="dateFin" class="field-label">Fin</label>
+                <input id="dateFin" type="datetime-local" th:field="*{dateFin}"
+                       class="field" th:errorclass="field-invalid" required>
+                <p th:errors="*{dateFin}" class="field-error"></p>
+            </div>
+        </div>
+        <div>
+            <label for="nombreParticipants" class="field-label">Nombre de participants</label>
+            <input id="nombreParticipants" type="number" min="1" step="1" th:field="*{nombreParticipants}"
+                   class="field sm:max-w-48" th:errorclass="field-invalid" required>
+            <p th:errors="*{nombreParticipants}" class="field-error"></p>
+        </div>
+        <fieldset class="grid gap-3">
+            <legend class="field-label">Équipements mobiles (facultatif)</legend>
+            <p class="text-sm text-slate-600">Seuls les équipements mobiles hors maintenance sont proposés ; leur disponibilité dépend du créneau choisi.</p>
+            <p th:if="${#lists.isEmpty(equipements)}" class="text-sm text-slate-500">Aucun équipement réservable.</p>
+            <label th:each="equipement : ${equipements}"
+                   class="flex items-center gap-3 rounded-lg border border-slate-200 px-4 py-3 hover:bg-slate-50">
+                <input type="checkbox" th:field="*{equipementIds}" th:value="${equipement.id}"
+                       class="size-4 accent-blue-700">
+                <span class="font-medium" th:text="${equipement.nom}"></span>
+            </label>
+        </fieldset>
+        <div class="button-row border-t border-slate-200 pt-6">
+            <button type="submit" class="btn-primary">Créer la réservation</button>
+            <a th:href="@{/reservations}" class="btn-secondary">Annuler</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

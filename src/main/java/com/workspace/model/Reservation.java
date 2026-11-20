@@ -63,6 +63,17 @@ public class Reservation {
     protected Reservation() {
     }
 
+    public Reservation(Salle salle, Employe employe, LocalDateTime dateDebut, LocalDateTime dateFin,
+                       String objet, int nombreParticipants, Set<Equipement> equipements) {
+        this.salle = salle;
+        this.employe = employe;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.objet = objet;
+        this.nombreParticipants = nombreParticipants;
+        setEquipements(equipements);
+    }
+
     public Long getId() {
         return id;
     }
