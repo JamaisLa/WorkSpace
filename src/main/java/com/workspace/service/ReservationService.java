@@ -60,8 +60,16 @@ public class ReservationService {
     }
 
     public ReservationResume consulter(Long id, String identifiantEmploye) {
+        return resume(trouverReservation(id, identifiantEmploye));
+    }
+
+    @Transactional
+    public void annuler(Long id, String identifiantEmploye) {
+        reservationRepository.delete(trouverReservation(id, identifiantEmploye));
+    }
+
+    private Reservation trouverReservation(Long id, String identifiantEmploye) {
         return reservationRepository.findByIdAndEmploye_IdentifiantConnexionIgnoreCase(id, identifiantEmploye)
-                .map(ReservationService::resume)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Réservation introuvable."));
     }
 

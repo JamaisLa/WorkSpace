@@ -46,6 +46,19 @@ public class ReservationController {
         return "reservations/detail";
     }
 
+    @GetMapping("/{id:[0-9]+}/annuler")
+    public String confirmerAnnulation(@PathVariable Long id, Authentication authentication, Model model) {
+        model.addAttribute("reservation", reservationService.consulter(id, authentication.getName()));
+        return "reservations/cancel";
+    }
+
+    @PostMapping("/{id:[0-9]+}/annuler")
+    public String annuler(@PathVariable Long id, Authentication authentication, RedirectAttributes redirect) {
+        reservationService.annuler(id, authentication.getName());
+        redirect.addFlashAttribute("success", "La réservation a été annulée.");
+        return "redirect:/reservations";
+    }
+
     @GetMapping("/nouvelle")
     public String nouvelle(Model model) {
         model.addAttribute("reservationForm", new ReservationForm());

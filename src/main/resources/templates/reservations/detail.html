@@ -33,6 +33,7 @@
             <dd th:text="${#lists.isEmpty(reservation.equipements) ? 'Aucun' : #strings.listJoin(reservation.equipements, ', ')}"></dd>
         </div>
     </dl>
+    <a th:href="@{/reservations/{id}/annuler(id=${reservation.id})}" class="btn-danger">Annuler la réservation</a>
 </main>
 </body>
 </html>

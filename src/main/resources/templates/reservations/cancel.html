@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/salles.css}">
+    <title>Annuler une réservation — WorkSpace Lite</title>
+</head>
+<body class="site-body">
+<main class="room-page max-w-2xl space-y-6">
+    <h1 class="page-title">Annuler cette réservation ?</h1>
+    <section class="panel p-6 sm:p-8" aria-label="Confirmation d’annulation">
+        <p class="leading-7 text-slate-600">
+            Vous allez annuler <strong th:text="${reservation.objet}"></strong>
+            dans la salle <strong th:text="${reservation.salle}"></strong>,
+            du <span th:text="${reservation.dateDebut}"></span>
+            au <span th:text="${reservation.dateFin}"></span>.
+        </p>
+        <form method="post" th:action="@{/reservations/{id}/annuler(id=${reservation.id})}" class="mt-7 button-row">
+            <button type="submit" class="btn-danger">Confirmer l’annulation</button>
+            <a th:href="@{/reservations/{id}(id=${reservation.id})}" class="btn-secondary">Garder la réservation</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>
