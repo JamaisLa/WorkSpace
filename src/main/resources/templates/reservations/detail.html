@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/salles.css}">
+    <title>Détail de la réservation — WorkSpace Lite</title>
+</head>
+<body class="site-body">
+<main class="room-page space-y-7">
+    <a th:href="@{/reservations}" class="text-link text-sm">Retour à mes réservations</a>
+    <h1 class="page-title" th:text="${reservation.objet}"></h1>
+    <dl class="panel space-y-4 p-8">
+        <div>
+            <dt class="font-semibold">Salle</dt>
+            <dd th:text="${reservation.salle}"></dd>
+        </div>
+        <div>
+            <dt class="font-semibold">Début</dt>
+            <dd th:text="${reservation.dateDebut}"></dd>
+        </div>
+        <div>
+            <dt class="font-semibold">Fin</dt>
+            <dd th:text="${reservation.dateFin}"></dd>
+        </div>
+        <div>
+            <dt class="font-semibold">Participants</dt>
+            <dd th:text="${reservation.nombreParticipants}"></dd>
+        </div>
+        <div>
+            <dt class="font-semibold">Équipements</dt>
+            <dd th:text="${#lists.isEmpty(reservation.equipements) ? 'Aucun' : #strings.listJoin(reservation.equipements, ', ')}"></dd>
+        </div>
+    </dl>
+</main>
+</body>
+</html>

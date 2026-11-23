@@ -11,6 +11,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.security.core.Authentication;
@@ -37,6 +38,12 @@ public class ReservationController {
     public String lister(Authentication authentication, Model model) {
         model.addAttribute("reservations", reservationService.mesReservations(authentication.getName()));
         return "reservations/list";
+    }
+
+    @GetMapping("/{id:[0-9]+}")
+    public String consulter(@PathVariable Long id, Authentication authentication, Model model) {
+        model.addAttribute("reservation", reservationService.consulter(id, authentication.getName()));
+        return "reservations/detail";
     }
 
     @GetMapping("/nouvelle")

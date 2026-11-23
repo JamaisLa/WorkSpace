@@ -59,6 +59,12 @@ public class ReservationService {
                 .toList();
     }
 
+    public ReservationResume consulter(Long id, String identifiantEmploye) {
+        return reservationRepository.findByIdAndEmploye_IdentifiantConnexionIgnoreCase(id, identifiantEmploye)
+                .map(ReservationService::resume)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Réservation introuvable."));
+    }
+
     @Transactional
     public Long creer(@NotNull @Valid ReservationForm form, @NotNull String identifiantEmploye) {
         Salle salle = salleRepository.findById(form.getSalleId()).orElseThrow(() -> new ResponseStatusException(

@@ -33,7 +33,10 @@
                 </thead>
                 <tbody class="divide-y divide-slate-200">
                 <tr th:each="reservation : ${reservations}" class="align-top">
-                    <th scope="row" class="px-5 py-4 font-semibold" th:text="${reservation.objet}"></th>
+                    <th scope="row" class="px-5 py-4 font-semibold">
+                        <a class="text-link" th:href="@{/reservations/{id}(id=${reservation.id})}"
+                           th:text="${reservation.objet}"></a>
+                    </th>
                     <td class="px-5 py-4" th:text="${reservation.salle}"></td>
                     <td class="whitespace-nowrap px-5 py-4" th:text="${reservation.dateDebut}"></td>
                     <td class="whitespace-nowrap px-5 py-4" th:text="${reservation.dateFin}"></td>
