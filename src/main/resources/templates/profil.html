@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Mon profil — WorkSpace Lite</title>
+</head>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(true, 'profil')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page">
+    <h1 class="ws-page-title">Mon profil</h1>
+    <div class="grid items-start gap-ws-lg ws-tablet:grid-cols-2">
+        <section class="ws-panel p-ws-lg sm:p-ws-xl" aria-labelledby="profil-title">
+            <h2 id="profil-title" class="ws-section-title">Informations personnelles</h2>
+            <p th:if="${success}" th:text="${success}" role="status"
+               class="ws-status mt-ws-md"></p>
+            <form class="mt-ws-lg grid gap-ws-lg" th:action="@{/profil}" th:object="${profilForm}" method="post">
+                <p class="ws-alert" th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.globalErrors()}" th:text="${error}" role="alert"></p>
+                <div>
+                    <label class="ws-label" for="nom">Nom</label>
+                    <input class="ws-field"
+                           id="nom" th:field="*{nom}" th:errorclass="ws-field-invalid"
+                           th:attr="aria-invalid=${#fields.hasErrors('nom')},aria-describedby=${#fields.hasErrors('nom') ? 'nom-error' : null}" autocomplete="family-name" required maxlength="100">
+                    <p id="nom-error" class="ws-field-error" th:errors="*{nom}"></p>
+                </div>
+                <div>
+                    <label class="ws-label" for="prenom">Prénom</label>
+                    <input class="ws-field"
+                           id="prenom" th:field="*{prenom}" th:errorclass="ws-field-invalid"
+                           th:attr="aria-invalid=${#fields.hasErrors('prenom')},aria-describedby=${#fields.hasErrors('prenom') ? 'prenom-error' : null}" autocomplete="given-name" required maxlength="100">
+                    <p id="prenom-error" class="ws-field-error" th:errors="*{prenom}"></p>
+                </div>
+                <div>
+                    <label class="ws-label" for="email">Adresse e-mail et identifiant de connexion</label>
+                    <input class="ws-field"
+                           id="email" type="email" th:field="*{email}" th:errorclass="ws-field-invalid"
+                           th:attr="aria-invalid=${#fields.hasErrors('email')},aria-describedby=${#fields.hasErrors('email') ? 'email-error email-help' : 'email-help'}" autocomplete="email" required maxlength="254">
+                    <p id="email-error" class="ws-field-error" th:errors="*{email}"></p>
+                    <p id="email-help" class="mt-2 text-ws-small text-ws-muted">La nouvelle adresse servira aussi pour vos prochaines connexions.</p>
+                </div>
+                <div>
+                    <label class="ws-label" for="telephone">Téléphone</label>
+                    <input class="ws-field"
+                           id="telephone" type="tel" th:field="*{telephone}" th:errorclass="ws-field-invalid"
+                           th:attr="aria-invalid=${#fields.hasErrors('telephone')},aria-describedby=${#fields.hasErrors('telephone') ? 'telephone-error' : null}" autocomplete="tel" maxlength="30">
+                    <p id="telephone-error" class="ws-field-error" th:errors="*{telephone}"></p>
+                </div>
+                <div class="ws-actions border-t border-ws-line pt-ws-lg">
+                    <button class="ws-pill ws-pill-primary" type="submit">Enregistrer les modifications</button>
+                    <a class="ws-pill ws-pill-secondary" th:href="@{/}">Annuler</a>
+                </div>
+            </form>
+        </section>
+
+        <section class="ws-panel p-ws-lg sm:p-ws-xl" aria-labelledby="password-title">
+            <h2 id="password-title" class="ws-section-title">Changer le mot de passe</h2>
+            <p class="mt-2 text-ws-small text-ws-muted">Saisissez votre mot de passe actuel, puis confirmez le nouveau.</p>
+            <p th:if="${passwordSuccess}" th:text="${passwordSuccess}" role="status"
+               class="ws-status mt-ws-md"></p>
+            <form class="mt-ws-lg grid gap-ws-lg" th:action="@{/profil/mot-de-passe}"
+                  th:object="${motDePasseForm}" method="post">
+                <p class="ws-alert" th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.globalErrors()}" th:text="${error}" role="alert"></p>
+                <div>
+                    <label class="ws-label" for="motDePasseActuel">Mot de passe actuel</label>
+                    <input class="ws-field"
+                           id="motDePasseActuel" type="password" th:field="*{motDePasseActuel}" th:errorclass="ws-field-invalid"
+                           th:attr="aria-invalid=${#fields.hasErrors('motDePasseActuel')},aria-describedby=${#fields.hasErrors('motDePasseActuel') ? 'motDePasseActuel-error' : null}"
+                           autocomplete="current-password" required>
+                    <p id="motDePasseActuel-error" class="ws-field-error" th:errors="*{motDePasseActuel}"></p>
+                </div>
+                <div>
+                    <label class="ws-label" for="nouveauMotDePasse">Nouveau mot de passe</label>
+                    <input class="ws-field"
+                           id="nouveauMotDePasse" type="password" th:field="*{nouveauMotDePasse}" th:errorclass="ws-field-invalid"
+                           th:attr="aria-invalid=${#fields.hasErrors('nouveauMotDePasse')},aria-describedby=${#fields.hasErrors('nouveauMotDePasse') ? 'nouveauMotDePasse-error' : null}"
+                           autocomplete="new-password" minlength="8" maxlength="100" required>
+                    <p id="nouveauMotDePasse-error" class="ws-field-error" th:errors="*{nouveauMotDePasse}"></p>
+                </div>
+                <div>
+                    <label class="ws-label" for="confirmation">Confirmer le nouveau mot de passe</label>
+                    <input class="ws-field"
+                           id="confirmation" type="password" th:field="*{confirmation}" th:errorclass="ws-field-invalid"
+                           th:attr="aria-invalid=${#fields.hasErrors('confirmation')},aria-describedby=${#fields.hasErrors('confirmation') ? 'confirmation-error' : null}"
+                           autocomplete="new-password" required>
+                    <p id="confirmation-error" class="ws-field-error" th:errors="*{confirmation}"></p>
+                </div>
+                <div class="ws-actions border-t border-ws-line pt-ws-lg">
+                    <button class="ws-pill ws-pill-primary" type="submit">Mettre à jour le mot de passe</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: credits}"></footer>
+</body>
+</html>

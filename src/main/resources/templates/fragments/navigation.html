@@ -12,6 +12,7 @@
             <a class="ws-link" th:href="@{/salles}" th:attr="aria-current=${section == 'salles' ? 'location' : null}">Salles</a>
             <a class="ws-link" th:href="@{/equipements}" th:attr="aria-current=${section == 'equipements' ? 'location' : null}">Équipements</a>
             <a class="ws-link" th:href="@{/reservations}" th:attr="aria-current=${section == 'reservations' ? 'location' : null}">Mes réservations</a>
+            <a class="ws-link" th:href="@{/profil}" th:attr="aria-current=${section == 'profil' ? 'location' : null}">Mon profil</a>
         </nav>
 
         <div th:unless="${signedIn}" class="flex items-center gap-ws-sm ws-tablet:col-start-3 ws-tablet:justify-self-end">
@@ -33,6 +34,7 @@
                 <a class="ws-link flex min-h-ws-target items-center px-ws-sm" th:href="@{/salles}" th:attr="aria-current=${section == 'salles' ? 'location' : null}">Salles</a>
                 <a class="ws-link flex min-h-ws-target items-center px-ws-sm" th:href="@{/equipements}" th:attr="aria-current=${section == 'equipements' ? 'location' : null}">Équipements</a>
                 <a class="ws-link flex min-h-ws-target items-center px-ws-sm" th:href="@{/reservations}" th:attr="aria-current=${section == 'reservations' ? 'location' : null}">Mes réservations</a>
+                <a class="ws-link flex min-h-ws-target items-center px-ws-sm" th:href="@{/profil}" th:attr="aria-current=${section == 'profil' ? 'location' : null}">Mon profil</a>
                 <form class="mt-1 border-t border-ws-line pt-2" th:action="@{/logout}" method="post">
                     <button class="ws-pill ws-pill-secondary w-full" type="submit">Se déconnecter</button>
                 </form>
