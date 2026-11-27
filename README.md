@@ -33,17 +33,24 @@ Gérer les salles, les équipements et les réservations d’une entreprise.
 
 ## Développement local
 
-Prérequis : Java 21.
+Prérequis : Java 21 et Node.js avec npm.
 
 Compte administrateur initial : identifiant `admin`, mot de passe `admin`.
+
+Le CSS généré par Tailwind est ignoré par Git. Après un nouveau clone, installez les dépendances et compilez le CSS avant de lancer l’application ou de construire le JAR. Relancez `npm run build:css` après une modification des sources Tailwind ou des classes Tailwind dans les templates.
 
 Sous Linux/macOS :
 
 ```bash
-npm ci 
+npm ci
+npm run build:css
 ./mvnw spring-boot:run
 ```
 
 Sous Windows :
 
-mvnw.cmd spring-boot:run
+```powershell
+npm ci
+npm run build:css
+.\mvnw.cmd spring-boot:run
+```
