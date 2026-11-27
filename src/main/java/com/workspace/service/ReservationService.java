@@ -75,7 +75,7 @@ public class ReservationService {
 
     @Transactional
     public Long creer(@NotNull @Valid ReservationForm form, @NotNull String identifiantEmploye) {
-        Salle salle = salleRepository.findById(form.getSalleId()).orElseThrow(() -> new ResponseStatusException(
+        Salle salle = salleRepository.findForReservationById(form.getSalleId()).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Salle introuvable."));
         Employe employe = employeRepository.findByIdentifiantConnexionIgnoreCase(identifiantEmploye)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employé introuvable."));
@@ -110,13 +110,13 @@ public class ReservationService {
             return Set.of();
         }
 
-        List<Equipement> equipements = equipementRepository.findAllById(ids);
-        if (equipements.size() != ids.size()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "Un équipement sélectionné est introuvable.");
-        }
+        Set<Equipement> equipements = new LinkedHashSet<>();
 
-        for (Equipement equipement : equipements) {
+        // Acquérir les verrous dans le même ordre pour toutes les réservations.
+        for (Long id : ids.stream().sorted().toList()) {
+            Equipement equipement = equipementRepository.findForReservationById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "Un équipement sélectionné est introuvable."));
             if (equipement.getMobilite() != MobiliteEquipement.MOBILE) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT,
                         "Seuls les équipements mobiles peuvent être réservés.");
@@ -130,8 +130,9 @@ public class ReservationService {
                 throw new ResponseStatusException(HttpStatus.CONFLICT,
                         "Un équipement sélectionné est déjà réservé sur ce créneau.");
             }
+            equipements.add(equipement);
         }
-        return new LinkedHashSet<>(equipements);
+        return equipements;
     }
 
     private static ReservationResume resume(Reservation reservation) {

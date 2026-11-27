@@ -3,14 +3,20 @@ package com.workspace.repository;
 import com.workspace.model.Equipement;
 import com.workspace.model.EtatEquipement;
 import com.workspace.model.MobiliteEquipement;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EquipementRepository extends JpaRepository<Equipement, Long> {
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<Equipement> findForReservationById(Long id);
+
     @EntityGraph(attributePaths = {"typeEquipement", "salle"})
     @Query("""
             select e from Equipement e
