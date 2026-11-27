@@ -28,5 +28,7 @@
     </section>
     <a th:if="${admin}" th:href="@{/salles/{id}/supprimer(id=${salle.id})}" class="ws-pill ws-pill-secondary">Supprimer la salle</a>
 </main>
+
+<footer th:replace="~{fragments/footer :: credits}"></footer>
 </body>
 </html>

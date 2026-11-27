@@ -36,5 +36,7 @@
     </dl>
     <a th:href="@{/reservations/{id}/annuler(id=${reservation.id})}" class="ws-pill ws-pill-secondary">Annuler la réservation</a>
 </main>
+
+<footer th:replace="~{fragments/footer :: credits}"></footer>
 </body>
 </html>

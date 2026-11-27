@@ -93,7 +93,7 @@
 @layer components {
   .ws-body {
     color-scheme: dark;
-    @apply min-h-screen bg-ws-canvas font-ws-body text-ws-body text-ws-ink
+    @apply flex min-h-screen flex-col bg-ws-canvas font-ws-body text-ws-body text-ws-ink
       selection:bg-ws-accent selection:text-ws-on-primary;
   }
 

@@ -63,10 +63,6 @@
     </div>
 </main>
 
-<footer class="ws-container mt-16 text-ws-caption text-ws-muted ws-tablet:mt-ws-section">
-    <div class="border-t border-ws-line-soft py-ws-xl">
-        <a class="ws-link inline-flex min-h-ws-target items-center" th:href="@{/}">WorkSpace Lite</a>
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: credits}"></footer>
 </body>
 </html>
