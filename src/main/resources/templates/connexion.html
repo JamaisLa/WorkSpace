@@ -6,24 +6,28 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Connexion — WorkSpace Lite</title>
 </head>
-<body class="site-body">
-<main class="site-card">
-    <h1 class="site-title">Se connecter</h1>
-    <p class="text-green-800" th:if="${param.inscription}">Compte créé. Tu peux te connecter.</p>
-    <p class="text-sm text-red-700" th:if="${param.error}">Identifiant ou mot de passe incorrect.</p>
-    <form class="mt-6 grid gap-4" th:action="@{/connexion}" method="post">
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="identifiant">Email ou identifiant</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="identifiant" name="identifiant" autocomplete="username" required>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(false, 'connexion')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page max-w-ws-form">
+    <h1 class="ws-page-title">Se connecter</h1>
+    <p role="status" class="ws-status" th:if="${param.inscription}">Compte créé. Tu peux te connecter.</p>
+    <p role="alert" class="ws-alert" th:if="${param.error}">Identifiant ou mot de passe incorrect.</p>
+    <form class="ws-panel grid gap-ws-lg p-ws-lg sm:p-ws-xl" th:action="@{/connexion}" method="post">
+        <div>
+            <label class="ws-label" for="identifiant">Email ou identifiant</label>
+            <input class="ws-field" id="identifiant" name="identifiant" autocomplete="username" required>
         </div>
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="motDePasse">Mot de passe</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="motDePasse" name="motDePasse" type="password" autocomplete="current-password" required>
+        <div>
+            <label class="ws-label" for="motDePasse">Mot de passe</label>
+            <input class="ws-field" id="motDePasse" name="motDePasse" type="password" autocomplete="current-password" required>
         </div>
-        <button class="site-button w-full" type="submit">Se connecter</button>
+        <button class="ws-pill ws-pill-primary w-full" type="submit">Se connecter</button>
     </form>
-    <p><a class="site-inline-link" th:href="@{/inscription}">Créer un compte employé</a></p>
-    <p><a class="site-inline-link" th:href="@{/}">Retour à l’accueil</a></p>
+    <div class="flex flex-wrap justify-between gap-ws-sm text-ws-small">
+        <a class="ws-link-inline" th:href="@{/inscription}">Créer un compte employé</a>
+        <a class="ws-link-inline" th:href="@{/}">Retour à l’accueil</a>
+    </div>
 </main>
 </body>
 </html>

@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title>Supprimer une salle</title>
 </head>
-<body class="site-body">
-<main class="room-page max-w-2xl space-y-6">
-    <p th:if="${success}" th:text="${success}" role="status" class="room-success"></p>
-    <a th:href="@{/salles/{id}(id=${salle.id})}" class="text-link text-sm">Retour à la salle</a>
-    <h1 class="page-title">Supprimer cette salle ?</h1>
-    <section class="panel p-6 sm:p-8" aria-label="Confirmation de suppression">
-        <p class="leading-7 text-slate-600">Vous allez supprimer <strong class="break-words text-slate-900" th:text="${salle.nom}"></strong>. Cette action est définitive.</p>
-        <form method="post" th:action="@{/salles/{id}/supprimer(id=${salle.id})}" class="mt-7 button-row">
-            <button type="submit" class="btn-danger">Supprimer définitivement</button>
-            <a th:href="@{/salles/{id}(id=${salle.id})}" class="btn-secondary">Annuler</a>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(true, 'salles')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page max-w-ws-form">
+    <p th:if="${success}" th:text="${success}" role="status" class="ws-status"></p>
+    <a th:href="@{/salles/{id}(id=${salle.id})}" class="ws-link-inline text-sm">Retour à la salle</a>
+    <h1 class="ws-page-title">Supprimer cette salle ?</h1>
+    <section class="ws-panel p-6 sm:p-8" aria-label="Confirmation de suppression">
+        <p class="leading-7 text-ws-muted">Vous allez supprimer <strong class="break-words text-ws-ink" th:text="${salle.nom}"></strong>. Cette action est définitive.</p>
+        <form method="post" th:action="@{/salles/{id}/supprimer(id=${salle.id})}" class="mt-7 ws-actions">
+            <button type="submit" class="ws-pill ws-pill-secondary">Supprimer définitivement</button>
+            <a th:href="@{/salles/{id}(id=${salle.id})}" class="ws-pill ws-pill-primary">Annuler</a>
         </form>
     </section>
 </main>

@@ -6,41 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>WorkSpace Lite</title>
 </head>
-<body class="min-h-screen bg-ws-canvas font-ws-body text-ws-body text-ws-ink selection:bg-ws-accent selection:text-ws-on-primary">
-<a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-30 focus:rounded-ws-pill focus:bg-ws-primary focus:px-ws-md focus:py-2 focus:text-ws-on-primary">Aller au contenu</a>
-
-<header class="sticky top-0 z-20 border-b border-ws-line-soft bg-ws-canvas">
-    <div class="ws-container relative flex min-h-ws-nav items-center justify-between gap-ws-sm text-ws-small font-medium ws-tablet:grid ws-tablet:grid-cols-[1fr_auto_1fr]">
-        <a class="ws-link font-ws-display text-lg font-ws-display-medium ws-tablet:justify-self-start" th:href="@{/}" aria-current="page">WorkSpace Lite</a>
-
-        <nav th:if="${loggedIn}" class="hidden items-center gap-ws-lg ws-tablet:flex" aria-label="Navigation principale">
-            <a class="ws-link" th:href="@{/salles}">Salles</a>
-            <a class="ws-link" th:href="@{/equipements}">Équipements</a>
-            <a class="ws-link" th:href="@{/reservations}">Mes réservations</a>
-        </nav>
-
-        <div th:unless="${loggedIn}" class="flex items-center gap-ws-sm ws-tablet:col-start-3 ws-tablet:justify-self-end">
-            <a class="ws-pill ws-pill-secondary hidden ws-tablet:inline-flex" th:href="@{/connexion}">Se connecter</a>
-            <a class="ws-pill ws-pill-primary" th:href="@{/inscription}">Créer un compte</a>
-        </div>
-
-        <form th:if="${loggedIn}" class="hidden ws-tablet:col-start-3 ws-tablet:block ws-tablet:justify-self-end" th:action="@{/logout}" method="post">
-            <button class="ws-pill ws-pill-secondary" type="submit">Se déconnecter</button>
-        </form>
-
-        <details th:if="${loggedIn}" class="ws-tablet:hidden">
-            <summary class="ws-pill ws-pill-secondary list-none [&::-webkit-details-marker]:hidden">Menu</summary>
-            <nav class="absolute inset-x-ws-lg top-full mt-2 grid gap-1 rounded-ws-card border border-ws-line bg-ws-surface p-ws-sm shadow-ws-floating" aria-label="Navigation principale">
-                <a class="ws-link flex min-h-ws-target items-center px-ws-sm" th:href="@{/salles}">Salles</a>
-                <a class="ws-link flex min-h-ws-target items-center px-ws-sm" th:href="@{/equipements}">Équipements</a>
-                <a class="ws-link flex min-h-ws-target items-center px-ws-sm" th:href="@{/reservations}">Mes réservations</a>
-                <form class="mt-1 border-t border-ws-line pt-2" th:action="@{/logout}" method="post">
-                    <button class="ws-pill ws-pill-secondary w-full" type="submit">Se déconnecter</button>
-                </form>
-            </nav>
-        </details>
-    </div>
-</header>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(${loggedIn}, 'accueil')}"></th:block>
 
 <main id="contenu" tabindex="-1" class="ws-container">
     <section aria-labelledby="titre" class="flex flex-col items-center py-16 text-center ws-tablet:py-ws-section">

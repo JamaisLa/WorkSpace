@@ -4,45 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title>Formulaire de salle</title>
 </head>
-<body class="site-body">
-<main class="room-page max-w-2xl space-y-6">
-    <p th:if="${success}" th:text="${success}" role="status" class="room-success"></p>
-    <a th:href="@{/salles}" class="text-link text-sm">Retour aux salles</a>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(true, 'salles')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page max-w-ws-form">
+    <p th:if="${success}" th:text="${success}" role="status" class="ws-status"></p>
+    <a th:href="@{/salles}" class="ws-link-inline text-sm">Retour aux salles</a>
     <div>
-        <h1 class="page-title" th:text="${modification} ? 'Modifier la salle' : 'Ajouter une salle'"></h1>
-        <p class="mt-3 leading-6 text-slate-500">Renseignez les informations utiles pour retrouver et choisir cet espace.</p>
+        <h1 class="ws-page-title" th:text="${modification} ? 'Modifier la salle' : 'Ajouter une salle'"></h1>
+        <p class="mt-3 leading-6 text-ws-muted">Renseignez les informations utiles pour retrouver et choisir cet espace.</p>
     </div>
     <form method="post" th:action="${modification} ? @{/salles/{id}(id=${salleId})} : @{/salles}"
-          th:object="${salleForm}" class="panel p-6 sm:p-8">
-        <p class="mb-6 text-sm text-slate-500">Tous les champs sont obligatoires.</p>
-        <div th:if="${#fields.hasAnyErrors()}" role="alert" class="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-800">Vérifiez les champs indiqués avant d’enregistrer.</div>
+          th:object="${salleForm}" class="ws-panel p-6 sm:p-8">
+        <p class="mb-6 text-sm text-ws-muted">Tous les champs sont obligatoires.</p>
+        <div th:if="${#fields.hasAnyErrors()}" role="alert" class="mb-6 ws-alert">Vérifiez les champs indiqués avant d’enregistrer.</div>
         <div class="space-y-6">
             <div>
-                <label for="nom" class="field-label">Nom de la salle</label>
-                <input id="nom" th:field="*{nom}" type="text" required maxlength="100" placeholder="Ex. Salle Innovation" class="field" th:errorclass="field-invalid"
+                <label for="nom" class="ws-label">Nom de la salle</label>
+                <input id="nom" th:field="*{nom}" type="text" required maxlength="100" placeholder="Ex. Salle Innovation" class="ws-field" th:errorclass="ws-field-invalid"
                        th:attr="aria-invalid=${#fields.hasErrors('nom')},aria-describedby=${#fields.hasErrors('nom') ? 'nom-error' : null}">
-                <p id="nom-error" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="field-error"></p>
+                <p id="nom-error" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="ws-field-error"></p>
             </div>
             <div>
-                <label for="capacite" class="field-label">Capacité d’accueil</label>
-                <input id="capacite" th:field="*{capacite}" type="number" required min="1" step="1" placeholder="Ex. 12" class="field sm:max-w-48" th:errorclass="field-invalid"
+                <label for="capacite" class="ws-label">Capacité d’accueil</label>
+                <input id="capacite" th:field="*{capacite}" type="number" required min="1" step="1" placeholder="Ex. 12" class="ws-field sm:max-w-48" th:errorclass="ws-field-invalid"
                        th:attr="aria-invalid=${#fields.hasErrors('capacite')},aria-describedby=${#fields.hasErrors('capacite') ? 'capacite-error' : 'capacite-help'}">
-                <p id="capacite-help" class="mt-2 text-sm text-slate-500">Nombre maximal de personnes dans la salle.</p>
-                <p id="capacite-error" th:if="${#fields.hasErrors('capacite')}" th:errors="*{capacite}" class="field-error"></p>
+                <p id="capacite-help" class="mt-2 text-sm text-ws-muted">Nombre maximal de personnes dans la salle.</p>
+                <p id="capacite-error" th:if="${#fields.hasErrors('capacite')}" th:errors="*{capacite}" class="ws-field-error"></p>
             </div>
             <div>
-                <label for="localisation" class="field-label">Localisation</label>
-                <input id="localisation" th:field="*{localisation}" type="text" required maxlength="200" placeholder="Ex. Bâtiment A, étage 2" class="field" th:errorclass="field-invalid"
+                <label for="localisation" class="ws-label">Localisation</label>
+                <input id="localisation" th:field="*{localisation}" type="text" required maxlength="200" placeholder="Ex. Bâtiment A, étage 2" class="ws-field" th:errorclass="ws-field-invalid"
                        th:attr="aria-invalid=${#fields.hasErrors('localisation')},aria-describedby=${#fields.hasErrors('localisation') ? 'localisation-error' : null}">
-                <p id="localisation-error" th:if="${#fields.hasErrors('localisation')}" th:errors="*{localisation}" class="field-error"></p>
+                <p id="localisation-error" th:if="${#fields.hasErrors('localisation')}" th:errors="*{localisation}" class="ws-field-error"></p>
             </div>
         </div>
-        <div class="mt-8 button-row border-t border-slate-200 pt-6">
-            <button type="submit" class="btn-primary" th:text="${modification} ? 'Enregistrer les modifications' : 'Créer la salle'"></button>
-            <a th:href="${modification} ? @{/salles/{id}(id=${salleId})} : @{/salles}" class="btn-secondary">Annuler</a>
+        <div class="mt-8 ws-actions border-t border-ws-line pt-6">
+            <button type="submit" class="ws-pill ws-pill-primary" th:text="${modification} ? 'Enregistrer les modifications' : 'Créer la salle'"></button>
+            <a th:href="${modification} ? @{/salles/{id}(id=${salleId})} : @{/salles}" class="ws-pill ws-pill-secondary">Annuler</a>
         </div>
     </form>
 </main>

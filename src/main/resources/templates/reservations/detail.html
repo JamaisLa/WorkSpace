@@ -4,36 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title>Détail de la réservation — WorkSpace Lite</title>
 </head>
-<body class="site-body">
-<main class="room-page space-y-7">
-    <a th:href="@{/reservations}" class="text-link text-sm">Retour à mes réservations</a>
-    <h1 class="page-title" th:text="${reservation.objet}"></h1>
-    <dl class="panel space-y-4 p-8">
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(true, 'reservations')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page">
+    <a th:href="@{/reservations}" class="ws-link-inline text-sm">Retour à mes réservations</a>
+    <h1 class="ws-page-title" th:text="${reservation.objet}"></h1>
+    <dl class="ws-panel grid gap-ws-lg p-ws-lg sm:grid-cols-2 sm:p-ws-xl">
         <div>
-            <dt class="font-semibold">Salle</dt>
-            <dd th:text="${reservation.salle}"></dd>
+            <dt class="text-ws-small text-ws-muted">Salle</dt>
+            <dd class="mt-1 font-medium" th:text="${reservation.salle}"></dd>
         </div>
         <div>
-            <dt class="font-semibold">Début</dt>
-            <dd th:text="${reservation.dateDebut}"></dd>
+            <dt class="text-ws-small text-ws-muted">Début</dt>
+            <dd class="mt-1 font-medium" th:text="${reservation.dateDebut}"></dd>
         </div>
         <div>
-            <dt class="font-semibold">Fin</dt>
-            <dd th:text="${reservation.dateFin}"></dd>
+            <dt class="text-ws-small text-ws-muted">Fin</dt>
+            <dd class="mt-1 font-medium" th:text="${reservation.dateFin}"></dd>
         </div>
         <div>
-            <dt class="font-semibold">Participants</dt>
-            <dd th:text="${reservation.nombreParticipants}"></dd>
+            <dt class="text-ws-small text-ws-muted">Participants</dt>
+            <dd class="mt-1 font-medium" th:text="${reservation.nombreParticipants}"></dd>
         </div>
         <div>
-            <dt class="font-semibold">Équipements</dt>
-            <dd th:text="${#lists.isEmpty(reservation.equipements) ? 'Aucun' : #strings.listJoin(reservation.equipements, ', ')}"></dd>
+            <dt class="text-ws-small text-ws-muted">Équipements</dt>
+            <dd class="mt-1 font-medium" th:text="${#lists.isEmpty(reservation.equipements) ? 'Aucun' : #strings.listJoin(reservation.equipements, ', ')}"></dd>
         </div>
     </dl>
-    <a th:href="@{/reservations/{id}/annuler(id=${reservation.id})}" class="btn-danger">Annuler la réservation</a>
+    <a th:href="@{/reservations/{id}/annuler(id=${reservation.id})}" class="ws-pill ws-pill-secondary">Annuler la réservation</a>
 </main>
 </body>
 </html>

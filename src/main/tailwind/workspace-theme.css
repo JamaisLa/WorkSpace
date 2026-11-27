@@ -12,7 +12,7 @@
   font-display: swap;
 }
 
-/* WorkSpace tokens from DESIGN.md. The ws prefix keeps the theme opt-in. */
+/* WorkSpace tokens from DESIGN.md. Edit these values to customize the site. */
 @theme {
   --color-ws-canvas: #090909;
   --color-ws-surface: #141414;
@@ -49,6 +49,12 @@
   --text-ws-card: 2rem;
   --text-ws-card--line-height: 1.13;
   --text-ws-card--letter-spacing: -0.03125em;
+  --text-ws-page: clamp(2rem, 6vw, 3.875rem);
+  --text-ws-page--line-height: 1;
+  --text-ws-page--letter-spacing: -0.05em;
+  --text-ws-heading: 1.375rem;
+  --text-ws-heading--line-height: 1.2;
+  --text-ws-heading--letter-spacing: -0.036em;
   --text-ws-lead: 1.125rem;
   --text-ws-lead--line-height: 1.3;
   --text-ws-lead--letter-spacing: -0.01em;
@@ -67,6 +73,7 @@
   --font-weight-ws-display-medium: 600;
 
   --radius-ws-control: 0.625rem;
+  --radius-ws-chip: 0.375rem;
   --radius-ws-card: 1.25rem;
   --radius-ws-spotlight: 1.875rem;
   --radius-ws-pill: 6.25rem;
@@ -79,16 +86,23 @@
   --spacing-ws-target: 2.75rem;
   --spacing-ws-nav: 3.5rem;
   --container-ws-page: 75rem;
+  --container-ws-form: 42rem;
   --breakpoint-ws-tablet: 50.625rem;
 }
 
 @layer components {
+  .ws-body {
+    color-scheme: dark;
+    @apply min-h-screen bg-ws-canvas font-ws-body text-ws-body text-ws-ink
+      selection:bg-ws-accent selection:text-ws-on-primary;
+  }
+
   .ws-container {
     @apply mx-auto w-full max-w-ws-page px-ws-lg ws-tablet:px-ws-xl;
   }
 
   .ws-pill {
-    @apply inline-flex min-h-ws-target cursor-pointer items-center justify-center rounded-ws-pill px-ws-md py-2.5 text-ws-button font-medium
+    @apply inline-flex min-h-ws-target cursor-pointer items-center justify-center rounded-ws-pill px-ws-md py-2.5 text-center text-ws-button font-medium
       focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ws-accent
       motion-safe:transition-transform motion-safe:active:scale-95;
   }
@@ -103,6 +117,137 @@
 
   .ws-link {
     @apply rounded-ws-control hover:text-ws-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ws-accent;
+  }
+
+  .ws-link[aria-current="location"] {
+    @apply text-ws-accent;
+  }
+
+  .ws-link-inline {
+    @apply w-fit text-ws-accent underline decoration-ws-accent/45 underline-offset-4 hover:decoration-ws-accent
+      focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ws-accent;
+  }
+
+  .ws-page {
+    @apply mx-auto grid w-full min-w-0 max-w-ws-page gap-ws-xl px-ws-lg py-ws-xxl
+      ws-tablet:px-ws-xl ws-tablet:py-16;
+  }
+
+  .ws-page-title {
+    @apply wrap-anywhere font-ws-display text-ws-page font-ws-display-medium;
+  }
+
+  .ws-section-title {
+    @apply text-ws-heading font-bold;
+  }
+
+  .ws-page-heading {
+    @apply flex flex-wrap items-end justify-between gap-ws-lg;
+  }
+
+  .ws-page-heading > div {
+    @apply min-w-0 wrap-anywhere;
+  }
+
+  .ws-panel {
+    @apply min-w-0 rounded-ws-card border border-ws-line-soft bg-ws-surface wrap-anywhere;
+  }
+
+  .ws-panel .ws-pill-secondary {
+    @apply bg-ws-raised hover:bg-ws-line;
+  }
+
+  .ws-actions {
+    @apply flex flex-wrap items-center gap-ws-sm;
+  }
+
+  .ws-label {
+    @apply mb-2 block text-ws-small font-medium;
+  }
+
+  .ws-field {
+    @apply min-h-ws-target w-full min-w-0 rounded-ws-control border border-ws-muted/65 bg-ws-surface
+      px-3.5 py-2.5 text-ws-body text-ws-ink placeholder:text-ws-muted
+      focus-visible:border-ws-accent focus-visible:outline-2 focus-visible:outline-offset-2
+      focus-visible:outline-ws-accent focus-visible:shadow-[0_0_0_1px] focus-visible:shadow-ws-accent/15;
+  }
+
+  .ws-field-error {
+    @apply mt-2 text-ws-small text-ws-coral;
+  }
+
+  .ws-field-invalid {
+    @apply border-ws-coral;
+  }
+
+  .ws-alert,
+  .ws-status {
+    @apply rounded-ws-control border border-ws-line bg-ws-raised px-ws-md py-ws-sm text-ws-small;
+  }
+
+  .ws-alert {
+    @apply text-ws-coral;
+  }
+
+  .ws-status::before {
+    content: "✓";
+    @apply mr-2 text-ws-success;
+  }
+
+  .ws-chip {
+    @apply inline-flex rounded-ws-chip bg-ws-raised px-2.5 py-1 text-ws-caption;
+  }
+
+  .ws-table {
+    @apply w-full text-left text-ws-small tabular-nums;
+  }
+
+  .ws-table thead {
+    @apply bg-ws-canvas text-ws-muted;
+  }
+
+  .ws-table th,
+  .ws-table td {
+    @apply px-ws-lg py-ws-md align-top;
+  }
+
+  .ws-table th {
+    @apply font-medium;
+  }
+
+  .ws-table tr + tr {
+    @apply border-t border-ws-line;
+  }
+
+  .ws-cell-label {
+    @apply text-ws-muted ws-tablet:hidden;
+  }
+
+  /* Keep the table associations on mobile while stacking each record visually. */
+  @variant max-ws-tablet {
+    .ws-table,
+    .ws-table caption,
+    .ws-table tbody,
+    .ws-table tr,
+    .ws-table th[scope="row"] {
+      @apply block;
+    }
+
+    .ws-table thead {
+      @apply sr-only;
+    }
+
+    .ws-table tbody tr {
+      @apply px-ws-lg py-ws-md;
+    }
+
+    .ws-table th[scope="row"] {
+      @apply px-0 pt-0 pb-2 text-ws-body;
+    }
+
+    .ws-table td {
+      @apply grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-baseline gap-ws-sm px-0 py-1;
+    }
   }
 
   .ws-spotlight {
