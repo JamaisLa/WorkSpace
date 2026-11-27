@@ -1,4 +1,4 @@
-# WorkSpace Lite
+# WorkSpace
 
 ## Objectif
 Gérer les salles, les équipements et les réservations d’une entreprise.

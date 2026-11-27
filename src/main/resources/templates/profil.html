@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Mon profil — WorkSpace Lite</title>
+    <title>Mon profil — WorkSpace</title>
 </head>
 <body class="ws-body">
 <th:block th:replace="~{fragments/navigation :: header(true, 'profil')}"></th:block>
@@ -16,7 +16,7 @@
             <h2 id="profil-title" class="ws-section-title">Informations personnelles</h2>
             <p th:if="${success}" th:text="${success}" role="status"
                class="ws-status mt-ws-md"></p>
-            <form class="mt-ws-lg grid gap-ws-lg" th:action="@{/profil}" th:object="${profilForm}" method="post">
+            <form id="profilForm" class="mt-ws-lg grid gap-ws-lg" th:action="@{/profil}" th:object="${profilForm}" method="post">
                 <p class="ws-alert" th:if="${#fields.hasGlobalErrors()}"
                    th:each="error : ${#fields.globalErrors()}" th:text="${error}" role="alert"></p>
                 <div>
@@ -49,8 +49,9 @@
                     <p id="telephone-error" class="ws-field-error" th:errors="*{telephone}"></p>
                 </div>
                 <div class="ws-actions border-t border-ws-line pt-ws-lg">
-                    <button class="ws-pill ws-pill-primary" type="submit">Enregistrer les modifications</button>
-                    <a class="ws-pill ws-pill-secondary" th:href="@{/}">Annuler</a>
+                    <button id="saveProfile" class="ws-pill ws-pill-primary disabled:cursor-not-allowed disabled:opacity-50"
+                            type="submit" disabled>Enregistrer les modifications</button>
+                    <a id="cancelProfile" class="ws-pill ws-pill-secondary" th:href="@{/}" hidden>Annuler</a>
                 </div>
             </form>
         </section>
@@ -97,5 +98,22 @@
 </main>
 
 <footer th:replace="~{fragments/footer :: credits}"></footer>
+<script>
+    const profileForm = document.getElementById('profilForm');
+    const profileFields = profileForm.querySelectorAll('[name="nom"], [name="prenom"], [name="email"], [name="telephone"]');
+    const saveProfile = document.getElementById('saveProfile');
+    const cancelProfile = document.getElementById('cancelProfile');
+
+    function updateProfileActions() {
+        const modified = Array.from(profileFields).some(field => field.value !== field.defaultValue);
+        saveProfile.disabled = !modified;
+        cancelProfile.hidden = !modified;
+    }
+
+    profileFields.forEach(field => {
+        field.addEventListener('input', updateProfileActions);
+        field.addEventListener('change', updateProfileActions);
+    });
+</script>
 </body>
 </html>

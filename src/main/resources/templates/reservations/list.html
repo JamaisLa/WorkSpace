@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Mes réservations — WorkSpace Lite</title>
+    <title>Mes réservations — WorkSpace</title>
 </head>
 <body class="ws-body">
 <th:block th:replace="~{fragments/navigation :: header(true, 'reservations')}"></th:block>
@@ -29,6 +29,7 @@
                     <th scope="col" role="columnheader">Fin</th>
                     <th scope="col" role="columnheader">Participants</th>
                     <th scope="col" role="columnheader">Équipements</th>
+                    <th scope="col" role="columnheader">Action</th>
                 </tr>
                 </thead>
                 <tbody role="rowgroup">
@@ -59,6 +60,11 @@
                             <span th:if="${#lists.isEmpty(reservation.equipements)}">Aucun</span>
                             <span th:unless="${#lists.isEmpty(reservation.equipements)}" th:text="${#strings.listJoin(reservation.equipements, ', ')}"></span>
                         </div>
+                    </td>
+                    <td role="cell">
+                        <span aria-hidden="true" class="ws-cell-label">Détails</span>
+                        <a class="ws-pill ws-pill-secondary" th:href="@{/reservations/{id}(id=${reservation.id})}"
+                           th:attr="aria-label=${'Détails de la réservation : ' + reservation.objet}">Détails</a>
                     </td>
                 </tr>
                 </tbody>

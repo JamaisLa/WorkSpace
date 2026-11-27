@@ -1,4 +1,4 @@
-# MCD — WorkSpace Lite
+# MCD — WorkSpace
 
 ```mermaid
 erDiagram

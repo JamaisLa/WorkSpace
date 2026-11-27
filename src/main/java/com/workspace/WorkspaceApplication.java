@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 import java.util.List;
 
 @SpringBootApplication
-public class WorkspaceLiteApplication {
+public class WorkspaceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WorkspaceLiteApplication.class, args);
+		SpringApplication.run(WorkspaceApplication.class, args);
 	}
 
 	@Bean

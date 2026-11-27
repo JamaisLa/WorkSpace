@@ -6,7 +6,7 @@
 
 <header class="sticky top-0 z-20 border-b border-ws-line-soft bg-ws-canvas">
     <div class="ws-container relative flex min-h-ws-nav items-center justify-between gap-ws-sm text-ws-small font-medium ws-tablet:grid ws-tablet:grid-cols-[1fr_auto_1fr]">
-        <a class="ws-link font-ws-display text-lg font-ws-display-medium ws-tablet:justify-self-start" th:href="@{/}" th:attr="aria-current=${section == 'accueil' ? 'page' : null}">WorkSpace Lite</a>
+        <a class="ws-link font-ws-display text-lg font-ws-display-medium ws-tablet:justify-self-start" th:href="@{/}" th:attr="aria-current=${section == 'accueil' ? 'page' : null}">WorkSpace</a>
 
         <nav th:if="${signedIn}" class="hidden items-center gap-ws-lg ws-tablet:flex" aria-label="Navigation principale">
             <a class="ws-link" th:href="@{/salles}" th:attr="aria-current=${section == 'salles' ? 'location' : null}">Salles</a>
