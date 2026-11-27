@@ -1,6 +1,7 @@
 package com.workspace.controller;
 
 import com.workspace.dto.ProfilForm;
+import com.workspace.dto.MotDePasseForm;
 import com.workspace.security.EmployeUserDetailsService;
 import com.workspace.service.ProfilService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,9 +44,15 @@ public class ProfilController {
         binder.setAllowedFields("nom", "prenom", "email", "telephone");
     }
 
+    @InitBinder("motDePasseForm")
+    void configurerFormulaireMotDePasse(WebDataBinder binder) {
+        binder.setAllowedFields("motDePasseActuel", "nouveauMotDePasse", "confirmation");
+    }
+
     @GetMapping
     public String afficher(Authentication authentication, Model model) {
         model.addAttribute("profilForm", profilService.preparer(authentication.getName()));
+        model.addAttribute("motDePasseForm", new MotDePasseForm());
         return "profil";
     }
 
@@ -75,6 +82,32 @@ public class ProfilController {
             }
         }
         model.addAttribute("profilForm", profilForm);
+        return "profil";
+    }
+
+    @PostMapping("/mot-de-passe")
+    public String modifierMotDePasse(@Valid @ModelAttribute MotDePasseForm motDePasseForm,
+                                    BindingResult erreurs, Authentication authentication,
+                                    Model model, RedirectAttributes redirect) {
+        if (!erreurs.hasErrors() && !motDePasseForm.getNouveauMotDePasse().equals(motDePasseForm.getConfirmation())) {
+            erreurs.rejectValue("confirmation", "confirmation.mismatch",
+                    "La confirmation ne correspond pas au nouveau mot de passe.");
+        }
+        if (!erreurs.hasErrors()) {
+            try {
+                profilService.modifierMotDePasse(authentication.getName(), motDePasseForm);
+                redirect.addFlashAttribute("passwordSuccess", "Votre mot de passe a été modifié.");
+                return "redirect:/profil";
+            } catch (ResponseStatusException exception) {
+                if (exception.getStatusCode() == HttpStatus.CONFLICT) {
+                    erreurs.rejectValue("motDePasseActuel", "password.incorrect", exception.getReason());
+                } else {
+                    erreurs.reject("password.invalid", exception.getReason());
+                }
+            }
+        }
+        model.addAttribute("profilForm", profilService.preparer(authentication.getName()));
+        model.addAttribute("motDePasseForm", motDePasseForm);
         return "profil";
     }
 }

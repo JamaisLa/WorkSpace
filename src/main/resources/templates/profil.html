@@ -46,6 +46,42 @@
             <a class="site-button-secondary w-full" th:href="@{/}">Annuler</a>
         </div>
     </form>
+
+    <section class="mt-8 border-t border-slate-200 pt-7">
+        <h2 class="text-xl font-semibold text-slate-900">Changer le mot de passe</h2>
+        <p class="mt-2 text-sm text-slate-600">Saisissez votre mot de passe actuel, puis confirmez le nouveau.</p>
+        <p th:if="${passwordSuccess}" th:text="${passwordSuccess}" role="status"
+           class="mt-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800"></p>
+        <form class="mt-5 grid gap-4" th:action="@{/profil/mot-de-passe}"
+              th:object="${motDePasseForm}" method="post">
+            <p class="text-sm text-red-700" th:if="${#fields.hasGlobalErrors()}"
+               th:each="error : ${#fields.globalErrors()}" th:text="${error}" role="alert"></p>
+            <div class="grid gap-1.5">
+                <label class="font-semibold" for="motDePasseActuel">Mot de passe actuel</label>
+                <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200"
+                       id="motDePasseActuel" type="password" th:field="*{motDePasseActuel}"
+                       autocomplete="current-password" required>
+                <p class="text-sm text-red-700" th:errors="*{motDePasseActuel}"></p>
+            </div>
+            <div class="grid gap-1.5">
+                <label class="font-semibold" for="nouveauMotDePasse">Nouveau mot de passe</label>
+                <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200"
+                       id="nouveauMotDePasse" type="password" th:field="*{nouveauMotDePasse}"
+                       autocomplete="new-password" minlength="8" maxlength="100" required>
+                <p class="text-sm text-red-700" th:errors="*{nouveauMotDePasse}"></p>
+            </div>
+            <div class="grid gap-1.5">
+                <label class="font-semibold" for="confirmation">Confirmer le nouveau mot de passe</label>
+                <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200"
+                       id="confirmation" type="password" th:field="*{confirmation}"
+                       autocomplete="new-password" required>
+                <p class="text-sm text-red-700" th:errors="*{confirmation}"></p>
+            </div>
+            <div class="mt-2 flex justify-center border-t border-slate-200 pt-5">
+                <button class="site-button w-full" type="submit">Mettre à jour le mot de passe</button>
+            </div>
+        </form>
+    </section>
 </main>
 </body>
 </html>

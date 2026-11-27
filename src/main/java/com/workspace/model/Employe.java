@@ -113,6 +113,10 @@ public class Employe {
         return motDePasseHash;
     }
 
+    public void setMotDePasseHash(String motDePasseHash) {
+        this.motDePasseHash = motDePasseHash;
+    }
+
     public RoleEmploye getRole() {
         return role;
     }

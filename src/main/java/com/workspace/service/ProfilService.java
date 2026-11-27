@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.workspace.dto.MotDePasseForm;
 
 import java.util.Locale;
 
@@ -18,9 +20,11 @@ import java.util.Locale;
 @Transactional(readOnly = true)
 public class ProfilService {
     private final EmployeRepository employeRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ProfilService(EmployeRepository employeRepository) {
+    public ProfilService(EmployeRepository employeRepository, PasswordEncoder passwordEncoder) {
         this.employeRepository = employeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public ProfilForm preparer(@NotBlank String identifiantConnexion) {
@@ -48,6 +52,15 @@ public class ProfilService {
         employe.setIdentifiantConnexion(email);
         employe.setTelephone(form.getTelephone());
         return email;
+    }
+
+    @Transactional
+    public void modifierMotDePasse(@NotBlank String identifiantConnexion, @Valid MotDePasseForm form) {
+        Employe employe = trouver(identifiantConnexion);
+        if (!passwordEncoder.matches(form.getMotDePasseActuel(), employe.getMotDePasseHash())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Le mot de passe actuel est incorrect.");
+        }
+        employe.setMotDePasseHash(passwordEncoder.encode(form.getNouveauMotDePasse()));
     }
 
     private Employe trouver(String identifiantConnexion) {
