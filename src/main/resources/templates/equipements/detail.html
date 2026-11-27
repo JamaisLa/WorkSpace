@@ -4,57 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/salles.css}">
     <title>Détails de l’équipement</title>
 </head>
-<body class="site-body">
-<main class="room-page space-y-7">
-    <a th:href="@{/equipements}" class="text-link text-sm">Retour aux équipements</a>
-    <p th:if="${success}" th:text="${success}" role="status" class="room-success"></p>
-    <p th:if="${error}" th:text="${error}" role="alert" class="text-sm text-red-800"></p>
-    <div class="flex flex-wrap items-start justify-between gap-5">
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(true, 'equipements')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page">
+    <a th:href="@{/equipements}" class="ws-link-inline text-sm">Retour aux équipements</a>
+    <p th:if="${success}" th:text="${success}" role="status" class="ws-status"></p>
+    <p th:if="${error}" th:text="${error}" role="alert" class="ws-alert"></p>
+    <div class="ws-page-heading">
         <div>
-            <h1 class="page-title" th:text="${equipement.nom}"></h1>
-            <p class="mt-3 text-slate-500" th:text="${equipement.reference}"></p>
+            <h1 class="ws-page-title" th:text="${equipement.nom}"></h1>
+            <p class="mt-3 text-ws-muted" th:text="${equipement.reference}"></p>
         </div>
-        <div th:if="${admin}" class="button-row">
-            <a th:href="@{/equipements/{id}/modifier(id=${equipement.id})}" class="btn-primary">Modifier</a>
-            <a th:href="@{/equipements/{id}/supprimer(id=${equipement.id})}" class="btn-danger">Supprimer</a>
+        <div th:if="${admin}" class="ws-actions">
+            <a th:href="@{/equipements/{id}/modifier(id=${equipement.id})}" class="ws-pill ws-pill-primary">Modifier</a>
+            <a th:href="@{/equipements/{id}/supprimer(id=${equipement.id})}" class="ws-pill ws-pill-secondary">Supprimer</a>
         </div>
     </div>
-    <section class="panel grid gap-5 p-6 sm:grid-cols-2 sm:p-8" aria-label="Informations de l’équipement">
-        <div><p class="text-sm text-slate-500">Type</p><p class="mt-1 font-semibold" th:text="${equipement.typeEquipementNom}"></p></div>
-        <div><p class="text-sm text-slate-500">Installation</p><p class="mt-1 font-semibold" th:text="${equipement.mobilite.libelle}"></p></div>
-        <div><p class="text-sm text-slate-500">État</p><p class="mt-1 font-semibold" th:text="${equipement.etat.libelle}"></p></div>
-        <div><p class="text-sm text-slate-500">Salle</p><p class="mt-1 font-semibold" th:text="${equipement.salleNom == null ? 'Non affecté' : equipement.salleNom}"></p></div>
+    <section class="ws-panel grid gap-5 p-6 sm:grid-cols-2 sm:p-8" aria-label="Informations de l’équipement">
+        <div><p class="text-sm text-ws-muted">Type</p><p class="mt-1 font-semibold" th:text="${equipement.typeEquipementNom}"></p></div>
+        <div><p class="text-sm text-ws-muted">Installation</p><p class="mt-1 font-semibold" th:text="${equipement.mobilite.libelle}"></p></div>
+        <div><p class="text-sm text-ws-muted">État</p><p class="mt-1 font-semibold" th:text="${equipement.etat.libelle}"></p></div>
+        <div><p class="text-sm text-ws-muted">Salle</p><p class="mt-1 font-semibold" th:text="${equipement.salleNom == null ? 'Non affecté' : equipement.salleNom}"></p></div>
     </section>
-    <section th:if="${admin}" class="panel grid gap-5 p-6 sm:p-8" aria-label="Actions sur l’équipement">
-        <h2 class="text-lg font-semibold">Affectation et maintenance</h2>
+    <section th:if="${admin}" class="ws-panel grid gap-5 p-6 sm:p-8" aria-label="Actions sur l’équipement">
+        <h2 class="ws-section-title">Affectation et maintenance</h2>
         <form th:if="${equipement.mobilite.name() == 'MOBILE' and equipement.etat.name() != 'MAINTENANCE'}"
               method="post" th:action="@{/equipements/{id}/affecter(id=${equipement.id})}" th:object="${affectationForm}"
               class="flex flex-wrap items-end gap-3">
             <div class="min-w-56 flex-1">
-                <label for="salleId" class="field-label">Affecter à une salle</label>
-                <select id="salleId" th:field="*{salleId}" class="field" required>
+                <label for="salleId" class="ws-label">Affecter à une salle</label>
+                <select id="salleId" th:field="*{salleId}" class="ws-field" required>
                     <option value="">Choisir une salle</option>
                     <option th:each="salle : ${salles}" th:value="${salle.id}" th:text="${salle.nom}"></option>
                 </select>
             </div>
-            <button type="submit" class="btn-primary">Affecter</button>
+            <button type="submit" class="ws-pill ws-pill-primary">Affecter</button>
         </form>
         <form th:if="${admin and equipement.mobilite.name() == 'MOBILE' and equipement.salleId != null and equipement.etat.name() != 'MAINTENANCE'}"
               method="post" th:action="@{/equipements/{id}/retirer(id=${equipement.id})}">
-            <button type="submit" class="btn-secondary">Retirer de la salle</button>
+            <button type="submit" class="ws-pill ws-pill-secondary">Retirer de la salle</button>
         </form>
         <form th:if="${equipement.etat.name() != 'MAINTENANCE'}" method="post"
               th:action="@{/equipements/{id}/maintenance(id=${equipement.id})}">
-            <button type="submit" class="btn-secondary">Mettre en maintenance</button>
+            <button type="submit" class="ws-pill ws-pill-secondary">Mettre en maintenance</button>
         </form>
         <form th:if="${equipement.etat.name() == 'MAINTENANCE'}" method="post"
               th:action="@{/equipements/{id}/remettre-en-service(id=${equipement.id})}">
-            <button type="submit" class="btn-primary">Remettre en service</button>
+            <button type="submit" class="ws-pill ws-pill-primary">Remettre en service</button>
         </form>
     </section>
 </main>
+
+<footer th:replace="~{fragments/footer :: credits}"></footer>
 </body>
 </html>

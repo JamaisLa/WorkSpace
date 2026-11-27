@@ -6,26 +6,63 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>WorkSpace Lite</title>
 </head>
-<body class="site-body">
-<main class="site-card site-card-wide">
-    <h1 class="site-title site-title-home">WorkSpace Lite</h1>
-    <p class="mt-3 max-w-xl leading-7 text-slate-600">Gérez vos espaces de travail et vos réservations.</p>
-    <nav class="mt-8 grid gap-3 sm:grid-cols-2" th:unless="${loggedIn}" aria-label="Compte">
-        <a class="site-button" th:href="@{/inscription}">Créer un compte</a>
-        <a class="site-button" th:href="@{/connexion}">Se connecter</a>
-    </nav>
-    <div th:if="${loggedIn}" class="mt-8 border-t border-slate-200 pt-6">
-        <p class="text-sm text-slate-500">Connecté avec <span class="font-semibold text-slate-800" th:text="${email}"></span></p>
-        <nav class="mt-5 grid gap-3 sm:grid-cols-3" aria-label="Navigation principale">
-            <a class="site-nav-link" th:href="@{/salles}">Consulter les salles</a>
-            <a class="site-nav-link" th:href="@{/equipements}">Consulter les équipements</a>
-            <a class="site-nav-link" th:href="@{/reservations}">Mes réservations</a>
-            <a class="site-nav-link sm:col-span-3" th:href="@{/profil}">Mon profil</a>
-        </nav>
-        <form class="mt-6 flex justify-center border-t border-slate-200 pt-5" th:action="@{/logout}" method="post">
-            <button class="site-button-secondary" type="submit">Se déconnecter</button>
-        </form>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(${loggedIn}, 'accueil')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-container">
+    <section aria-labelledby="titre" class="flex flex-col items-center py-16 text-center ws-tablet:py-ws-section">
+        <h1 id="titre" class="font-ws-display text-ws-hero font-ws-display-medium ws-tablet:text-ws-hero-wide">Vos espaces.<br>Vos réservations.</h1>
+        <p class="mt-ws-lg max-w-md text-ws-lead text-ws-muted">Gérez les salles et les équipements de votre équipe au même endroit.</p>
+        <div th:unless="${loggedIn}" class="mt-ws-xl flex flex-wrap justify-center gap-ws-sm">
+            <a class="ws-pill ws-pill-primary" th:href="@{/inscription}">Créer un compte</a>
+            <a class="ws-pill ws-pill-secondary" th:href="@{/connexion}">Se connecter</a>
+        </div>
+        <div th:if="${loggedIn}" class="mt-ws-xl flex flex-col items-center gap-ws-sm">
+            <a class="ws-pill ws-pill-primary" th:href="@{/reservations}">Mes réservations</a>
+            <p class="max-w-full text-ws-small wrap-anywhere text-ws-muted">Connecté avec <span class="text-ws-ink" th:text="${email}"></span></p>
+        </div>
+    </section>
+
+    <div class="grid gap-ws-lg ws-tablet:grid-cols-2">
+        <article class="ws-spotlight">
+            <div class="ws-spotlight-art bg-ws-rooms" aria-hidden="true">
+                <div class="grid w-48 grid-cols-[1fr_4fr_1fr] grid-rows-[repeat(3,1.25rem)] items-center gap-2 rounded-ws-card bg-ws-surface/85 p-ws-lg shadow-ws-floating">
+                    <span class="col-start-2 row-start-1 mx-3 h-3 rounded-ws-pill bg-ws-ink/20 shadow-ws-floating"></span>
+                    <span class="col-start-1 row-start-2 h-6 rounded-ws-pill bg-ws-ink/20 shadow-ws-floating"></span>
+                    <span class="col-start-2 row-start-2 h-8 rounded-ws-control border border-ws-ink/25 bg-ws-ink/15 shadow-ws-floating"></span>
+                    <span class="col-start-3 row-start-2 h-6 rounded-ws-pill bg-ws-ink/20 shadow-ws-floating"></span>
+                    <span class="col-start-2 row-start-3 mx-3 h-3 rounded-ws-pill bg-ws-ink/20 shadow-ws-floating"></span>
+                </div>
+            </div>
+            <div class="flex flex-1 flex-col items-start p-ws-xl">
+                <h2 class="font-ws-display text-ws-card font-ws-display-medium">Salles</h2>
+                <p class="mt-2 text-ws-muted">Trouvez un espace pour vos réunions et vos ateliers.</p>
+                <a th:if="${loggedIn}" class="ws-pill ws-pill-secondary mt-ws-md bg-ws-raised" th:href="@{/salles}">Consulter les salles</a>
+            </div>
+        </article>
+
+        <article class="ws-spotlight">
+            <div class="ws-spotlight-art bg-ws-equipment" aria-hidden="true">
+                <div class="grid w-48 grid-cols-[2fr_1fr] items-center gap-ws-sm rounded-ws-card bg-ws-surface/85 p-ws-lg shadow-ws-floating">
+                    <div class="grid justify-items-center">
+                        <span class="aspect-video w-full rounded-ws-control border border-ws-ink/25 bg-ws-ink/15 shadow-ws-floating"></span>
+                        <span class="h-2 w-1 bg-ws-ink/25"></span>
+                        <span class="h-1 w-8 rounded-ws-pill bg-ws-ink/25"></span>
+                    </div>
+                    <div class="grid aspect-square place-items-center rounded-ws-control border border-ws-ink/25 bg-ws-ink/15 shadow-ws-floating">
+                        <span class="size-4 rounded-full border-2 border-ws-ink/40 bg-ws-ink/15"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-1 flex-col items-start p-ws-xl">
+                <h2 class="font-ws-display text-ws-card font-ws-display-medium">Équipements</h2>
+                <p class="mt-2 text-ws-muted">Consultez le matériel pour préparer votre prochaine réunion.</p>
+                <a th:if="${loggedIn}" class="ws-pill ws-pill-secondary mt-ws-md bg-ws-raised" th:href="@{/equipements}">Consulter les équipements</a>
+            </div>
+        </article>
     </div>
 </main>
+
+<footer th:replace="~{fragments/footer :: credits}"></footer>
 </body>
 </html>

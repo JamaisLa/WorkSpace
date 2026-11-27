@@ -34,6 +34,7 @@ build/
 
 ### Node Moduels ###
 node_modules/
+/src/main/resources/static/css/style.css
 
 # tokenade — per-project cache / scaffold flag / dedup refs
 .tokenade/

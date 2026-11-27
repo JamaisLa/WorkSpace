@@ -6,45 +6,57 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Créer un compte — WorkSpace Lite</title>
 </head>
-<body class="site-body">
-<main class="site-card">
-    <h1 class="site-title">Créer un compte employé</h1>
-    <form class="mt-6 grid gap-4" th:action="@{/inscription}" th:object="${inscription}" method="post">
-        <p class="text-sm text-red-700" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="nom">Nom</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="nom" th:field="*{nom}" autocomplete="family-name" required>
-            <p class="text-sm text-red-700" th:errors="*{nom}"></p>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(false, 'inscription')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page max-w-ws-form">
+    <h1 class="ws-page-title">Créer un compte employé</h1>
+    <form class="ws-panel grid gap-ws-lg p-ws-lg sm:p-ws-xl" th:action="@{/inscription}" th:object="${inscription}" method="post">
+        <p role="alert" class="ws-alert" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+        <div>
+            <label class="ws-label" for="nom">Nom</label>
+            <input class="ws-field" id="nom" th:field="*{nom}" th:errorclass="ws-field-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('nom')},aria-describedby=${#fields.hasErrors('nom') ? 'nom-error' : null}" autocomplete="family-name" required>
+            <p id="nom-error" class="ws-field-error" th:errors="*{nom}"></p>
         </div>
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="prenom">Prénom</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="prenom" th:field="*{prenom}" autocomplete="given-name" required>
-            <p class="text-sm text-red-700" th:errors="*{prenom}"></p>
+        <div>
+            <label class="ws-label" for="prenom">Prénom</label>
+            <input class="ws-field" id="prenom" th:field="*{prenom}" th:errorclass="ws-field-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('prenom')},aria-describedby=${#fields.hasErrors('prenom') ? 'prenom-error' : null}" autocomplete="given-name" required>
+            <p id="prenom-error" class="ws-field-error" th:errors="*{prenom}"></p>
         </div>
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="email">Email</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="email" type="email" th:field="*{email}" autocomplete="email" required>
-            <p class="text-sm text-red-700" th:errors="*{email}"></p>
+        <div>
+            <label class="ws-label" for="email">Email</label>
+            <input class="ws-field" id="email" type="email" th:field="*{email}" th:errorclass="ws-field-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('email')},aria-describedby=${#fields.hasErrors('email') ? 'email-error' : null}" autocomplete="email" required>
+            <p id="email-error" class="ws-field-error" th:errors="*{email}"></p>
         </div>
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="telephone">Téléphone</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="telephone" type="tel" th:field="*{telephone}" autocomplete="tel">
-            <p class="text-sm text-red-700" th:errors="*{telephone}"></p>
+        <div>
+            <label class="ws-label" for="telephone">Téléphone</label>
+            <input class="ws-field" id="telephone" type="tel" th:field="*{telephone}" th:errorclass="ws-field-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('telephone')},aria-describedby=${#fields.hasErrors('telephone') ? 'telephone-error' : null}" autocomplete="tel">
+            <p id="telephone-error" class="ws-field-error" th:errors="*{telephone}"></p>
         </div>
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="motDePasse">Mot de passe (8 caractères minimum)</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="motDePasse" type="password" th:field="*{motDePasse}" autocomplete="new-password" minlength="8" required>
-            <p class="text-sm text-red-700" th:errors="*{motDePasse}"></p>
+        <div>
+            <label class="ws-label" for="motDePasse">Mot de passe (8 caractères minimum)</label>
+            <input class="ws-field" id="motDePasse" type="password" th:field="*{motDePasse}" th:errorclass="ws-field-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('motDePasse')},aria-describedby=${#fields.hasErrors('motDePasse') ? 'motDePasse-error' : null}" autocomplete="new-password" minlength="8" required>
+            <p id="motDePasse-error" class="ws-field-error" th:errors="*{motDePasse}"></p>
         </div>
-        <div class="grid gap-1.5">
-            <label class="font-semibold" for="confirmation">Confirmer le mot de passe</label>
-            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200" id="confirmation" type="password" th:field="*{confirmation}" autocomplete="new-password" required>
-            <p class="text-sm text-red-700" th:errors="*{confirmation}"></p>
+        <div>
+            <label class="ws-label" for="confirmation">Confirmer le mot de passe</label>
+            <input class="ws-field" id="confirmation" type="password" th:field="*{confirmation}" th:errorclass="ws-field-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('confirmation')},aria-describedby=${#fields.hasErrors('confirmation') ? 'confirmation-error' : null}" autocomplete="new-password" required>
+            <p id="confirmation-error" class="ws-field-error" th:errors="*{confirmation}"></p>
         </div>
-        <button class="site-button w-full" type="submit">Créer mon compte</button>
+        <button class="ws-pill ws-pill-primary w-full" type="submit">Créer mon compte</button>
     </form>
-    <p><a class="site-inline-link" th:href="@{/connexion}">J’ai déjà un compte</a></p>
-    <p><a class="site-inline-link" th:href="@{/}">Retour à l’accueil</a></p>
+    <div class="flex flex-wrap justify-between gap-ws-sm text-ws-small">
+        <a class="ws-link-inline" th:href="@{/connexion}">J’ai déjà un compte</a>
+        <a class="ws-link-inline" th:href="@{/}">Retour à l’accueil</a>
+    </div>
 </main>
+
+<footer th:replace="~{fragments/footer :: credits}"></footer>
 </body>
 </html>

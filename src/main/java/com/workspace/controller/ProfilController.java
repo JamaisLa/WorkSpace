@@ -82,6 +82,7 @@ public class ProfilController {
             }
         }
         model.addAttribute("profilForm", profilForm);
+        model.addAttribute("motDePasseForm", new MotDePasseForm());
         return "profil";
     }
 
