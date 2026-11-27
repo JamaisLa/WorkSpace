@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Mon profil — WorkSpace Lite</title>
+</head>
+<body class="site-body">
+<main class="site-card">
+    <a th:href="@{/}" class="site-inline-link text-sm">Retour à l’accueil</a>
+    <h1 class="site-title mt-5">Mon profil</h1>
+    <p class="mt-2 text-slate-600">Modifiez vos informations personnelles.</p>
+    <p th:if="${success}" th:text="${success}" role="status"
+       class="mt-5 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800"></p>
+    <form class="mt-6 grid gap-4" th:action="@{/profil}" th:object="${profilForm}" method="post">
+        <p class="text-sm text-red-700" th:if="${#fields.hasGlobalErrors()}"
+           th:each="error : ${#fields.globalErrors()}" th:text="${error}" role="alert"></p>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="nom">Nom</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200"
+                   id="nom" th:field="*{nom}" autocomplete="family-name" required maxlength="100">
+            <p class="text-sm text-red-700" th:errors="*{nom}"></p>
+        </div>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="prenom">Prénom</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200"
+                   id="prenom" th:field="*{prenom}" autocomplete="given-name" required maxlength="100">
+            <p class="text-sm text-red-700" th:errors="*{prenom}"></p>
+        </div>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="email">Adresse e-mail et identifiant de connexion</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200"
+                   id="email" type="email" th:field="*{email}" autocomplete="email" required maxlength="254">
+            <p class="text-sm text-red-700" th:errors="*{email}"></p>
+            <p class="text-xs text-slate-500">La nouvelle adresse servira aussi pour vos prochaines connexions.</p>
+        </div>
+        <div class="grid gap-1.5">
+            <label class="font-semibold" for="telephone">Téléphone</label>
+            <input class="w-full rounded-md border border-slate-300 bg-white px-3 py-3 focus-visible:border-blue-600 focus-visible:outline-2 focus-visible:outline-blue-200"
+                   id="telephone" type="tel" th:field="*{telephone}" autocomplete="tel" maxlength="30">
+            <p class="text-sm text-red-700" th:errors="*{telephone}"></p>
+        </div>
+        <div class="mt-2 flex flex-wrap justify-center gap-3 border-t border-slate-200 pt-5">
+            <button class="site-button w-full" type="submit">Enregistrer les modifications</button>
+            <a class="site-button-secondary w-full" th:href="@{/}">Annuler</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
