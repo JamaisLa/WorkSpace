@@ -35,6 +35,10 @@ public interface EquipementRepository extends JpaRepository<Equipement, Long> {
 
     boolean existsBySalleId(Long salleId);
 
+    List<Equipement> findAllBySalleId(Long salleId);
+
+    long countBySalleId(Long salleId);
+
     List<Equipement> findAllByMobiliteAndEtatNotOrderByNomAsc(
             MobiliteEquipement mobilite, EtatEquipement etat);
 }

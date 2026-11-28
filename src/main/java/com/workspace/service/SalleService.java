@@ -2,7 +2,10 @@ package com.workspace.service;
 
 import com.workspace.dto.SalleForm;
 import com.workspace.dto.SalleResume;
+import com.workspace.model.Reservation;
 import com.workspace.model.Salle;
+import com.workspace.repository.EquipementRepository;
+import com.workspace.repository.ReservationRepository;
 import com.workspace.repository.SalleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
@@ -20,9 +23,14 @@ import java.util.List;
 public class SalleService {
 
     private final SalleRepository salleRepository;
+    private final ReservationRepository reservationRepository;
+    private final EquipementRepository equipementRepository;
 
-    public SalleService(SalleRepository salleRepository) {
+    public SalleService(SalleRepository salleRepository, ReservationRepository reservationRepository,
+                        EquipementRepository equipementRepository) {
         this.salleRepository = salleRepository;
+        this.reservationRepository = reservationRepository;
+        this.equipementRepository = equipementRepository;
     }
 
     public List<SalleResume> rechercher(String recherche, int capaciteMin) {
@@ -62,8 +70,23 @@ public class SalleService {
     }
 
     @Transactional
-    public void supprimer(Long id) {
-        salleRepository.delete(trouver(id));
+    public long supprimer(Long id) {
+        Salle salle = trouver(id);
+        List<Reservation> reservations = reservationRepository.findAllBySalle_Id(id);
+        reservationRepository.deleteAll(reservations);
+        reservationRepository.flush();
+        equipementRepository.findAllBySalleId(id).forEach(equipement -> equipement.setSalle(null));
+        equipementRepository.flush();
+        salleRepository.delete(salle);
+        return reservations.size();
+    }
+
+    public long nombreReservations(Long salleId) {
+        return reservationRepository.countBySalle_Id(salleId);
+    }
+
+    public long nombreEquipements(Long salleId) {
+        return equipementRepository.countBySalleId(salleId);
     }
 
     private static SalleResume resume(Salle salle) {

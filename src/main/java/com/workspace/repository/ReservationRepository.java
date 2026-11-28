@@ -10,6 +10,10 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findAllByEmploye_IdOrderByDateDebutDesc(Long employeId);
 
+    List<Reservation> findAllBySalle_Id(Long salleId);
+
+    long countBySalle_Id(Long salleId);
+
     Optional<Reservation> findByIdAndEmploye_IdentifiantConnexionIgnoreCase(Long id, String identifiantConnexion);
 
     List<Reservation> findAllByOrderByDateDebutAsc();
@@ -19,6 +23,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     boolean existsBySalle_IdAndDateDebutLessThanAndDateFinGreaterThan(
             Long salleId, LocalDateTime dateFin, LocalDateTime dateDebut);
+
+    boolean existsBySalle_Id(Long salleId);
 
     boolean existsBySalle_IdAndDateDebutLessThanAndDateFinGreaterThanAndIdNot(
             Long salleId, LocalDateTime dateFin, LocalDateTime dateDebut, Long reservationId);

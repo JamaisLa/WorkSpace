@@ -11,12 +11,27 @@
 
 <main id="contenu" tabindex="-1" class="ws-page max-w-ws-form">
     <p th:if="${success}" th:text="${success}" role="status" class="ws-status"></p>
+    <p th:if="${error}" th:text="${error}" role="alert" class="ws-alert"></p>
     <a th:href="@{/salles/{id}(id=${salle.id})}" class="ws-link-inline text-sm">Retour à la salle</a>
     <h1 class="ws-page-title">Supprimer cette salle ?</h1>
     <section class="ws-panel p-6 sm:p-8" aria-label="Confirmation de suppression">
-        <p class="leading-7 text-ws-muted">Vous allez supprimer <strong class="break-words text-ws-ink" th:text="${salle.nom}"></strong>. Cette action est définitive.</p>
+        <p th:if="${nombreReservations > 0}" class="ws-alert">
+            <strong th:text="${nombreReservations}"></strong>
+            <span th:text="${nombreReservations == 1 ? 'réservation existe encore pour cette salle.' : 'réservations existent encore pour cette salle.'}"></span>
+            Elles seront supprimées avec la salle.
+        </p>
+        <p th:if="${nombreEquipements > 0}" class="ws-alert">
+            <strong th:text="${nombreEquipements}"></strong>
+            <span th:text="${nombreEquipements == 1 ? 'équipement est associé à cette salle.' : 'équipements sont associés à cette salle.'}"></span>
+            Ils seront conservés dans l’inventaire, mais détachés de cette salle.
+        </p>
+        <p th:if="${nombreReservations + nombreEquipements > 0}" class="leading-7 text-ws-muted">
+            Voulez-vous vraiment supprimer <strong class="break-words text-ws-ink" th:text="${salle.nom}"></strong> ? Cette action est définitive.
+        </p>
+        <p th:if="${nombreReservations + nombreEquipements == 0}" class="leading-7 text-ws-muted">Vous allez supprimer <strong class="break-words text-ws-ink" th:text="${salle.nom}"></strong>. Cette action est définitive.</p>
         <form method="post" th:action="@{/salles/{id}/supprimer(id=${salle.id})}" class="mt-7 ws-actions">
-            <button type="submit" class="ws-pill ws-pill-secondary">Supprimer définitivement</button>
+            <button type="submit" class="ws-pill ws-pill-secondary"
+                    th:text="${nombreReservations > 0 ? 'Supprimer la salle et ses réservations' : 'Supprimer définitivement'}"></button>
             <a th:href="@{/salles/{id}(id=${salle.id})}" class="ws-pill ws-pill-primary">Annuler</a>
         </form>
     </section>

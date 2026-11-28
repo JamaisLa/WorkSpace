@@ -3,12 +3,14 @@ package com.workspace.controller;
 import com.workspace.dto.SalleForm;
 import com.workspace.service.SalleService;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -89,14 +91,30 @@ public class SalleController {
     @GetMapping("/{id}/supprimer")
     public String confirmerSuppression(@PathVariable Long id, Model model) {
         model.addAttribute("salle", salleService.consulter(id));
+        model.addAttribute("nombreReservations", salleService.nombreReservations(id));
+        model.addAttribute("nombreEquipements", salleService.nombreEquipements(id));
         return "salles/delete";
     }
 
     @PostMapping("/{id}/supprimer")
     public String supprimer(@PathVariable Long id, RedirectAttributes redirect) {
-        salleService.supprimer(id);
-        redirect.addFlashAttribute("success", "La salle a été supprimée.");
-        return "redirect:/salles";
+        try {
+            long reservationsSupprimees = salleService.supprimer(id);
+            String message = reservationsSupprimees == 1
+                    ? "La salle et sa réservation associée ont été supprimées."
+                    : reservationsSupprimees > 1
+                    ? "La salle et ses " + reservationsSupprimees + " réservations associées ont été supprimées."
+                    : "La salle a été supprimée.";
+            redirect.addFlashAttribute("success", message
+                    + " Les équipements liés sont conservés dans l’inventaire sans salle associée.");
+            return "redirect:/salles";
+        } catch (ResponseStatusException exception) {
+            redirect.addFlashAttribute("error", exception.getReason());
+        } catch (DataIntegrityViolationException exception) {
+            redirect.addFlashAttribute("error",
+                    "La suppression a échoué à cause d’un lien encore utilisé. Aucune donnée n’a été supprimée.");
+        }
+        return "redirect:/salles/" + id + "/supprimer";
     }
 
     private void preparerFormulaire(Model model, Long id) {
