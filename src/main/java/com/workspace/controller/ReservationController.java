@@ -96,14 +96,16 @@ public class ReservationController {
     public String formulaire(@RequestParam(required = false) Long salleId,
                              @RequestParam(required = false)
                              @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime dateDebut,
+                             @RequestParam(required = false)
+                             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime dateFin,
                              Model model) {
         ReservationForm form = new ReservationForm();
         form.setSalleId(salleId);
         form.setDateDebut(dateDebut);
-        form.setDateFin(dateDebut == null ? null : dateDebut.plusHours(1));
+        form.setDateFin(dateFin == null && dateDebut != null ? dateDebut.plusHours(1) : dateFin);
         model.addAttribute("reservationForm", form);
         preparerFormulaire(model, dateDebut == null ? reservationService.aujourdHui() : dateDebut.toLocalDate());
-        preparerCreneauChoisi(model, salleId, dateDebut);
+        preparerCreneauChoisi(model, salleId, dateDebut, form.getDateFin());
         return "reservations/form";
     }
 
@@ -122,7 +124,7 @@ public class ReservationController {
         LocalDate dateRetour = reservationForm.getDateDebut() == null
                 ? reservationService.aujourdHui() : reservationForm.getDateDebut().toLocalDate();
         preparerFormulaire(model, dateRetour);
-        preparerCreneauChoisi(model, reservationForm.getSalleId(), reservationForm.getDateDebut());
+        preparerCreneauChoisi(model, reservationForm.getSalleId(), reservationForm.getDateDebut(), reservationForm.getDateFin());
         return "reservations/form";
     }
 
@@ -135,17 +137,17 @@ public class ReservationController {
         model.addAttribute("dateRetour", dateRetour);
     }
 
-    private void preparerCreneauChoisi(Model model, Long salleId, LocalDateTime dateDebut) {
+    private void preparerCreneauChoisi(Model model, Long salleId, LocalDateTime dateDebut, LocalDateTime dateFin) {
         SalleResume salle = salleId == null ? null : salleService.rechercher("", 0).stream()
                 .filter(candidate -> candidate.id().equals(salleId))
                 .findFirst().orElse(null);
-        boolean choisi = salle != null && dateDebut != null;
+        boolean choisi = salle != null && dateDebut != null && dateFin != null && dateFin.isAfter(dateDebut);
         model.addAttribute("creneauChoisi", choisi);
         if (choisi) {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("EEEE d MMMM yyyy 'à' HH:mm", Locale.FRENCH);
             model.addAttribute("salleChoisie", salle);
             model.addAttribute("debutChoisi", format.format(dateDebut));
-            model.addAttribute("finChoisie", format.format(dateDebut.plusHours(1)));
+            model.addAttribute("finChoisie", format.format(dateFin));
         }
     }
 }

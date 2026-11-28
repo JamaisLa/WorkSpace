@@ -222,6 +222,14 @@
     @apply flex flex-wrap gap-x-ws-lg gap-y-ws-sm text-ws-small text-ws-muted;
   }
 
+  .ws-slot-selection {
+    @apply flex flex-wrap items-center justify-between gap-ws-md rounded-ws-control border border-ws-line bg-ws-surface p-ws-md;
+  }
+
+  .ws-slot-selection button:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+
   .ws-schedule-legend > span {
     @apply inline-flex items-center gap-2;
   }
@@ -279,6 +287,14 @@
   }
 
   .ws-schedule-slot > span:first-child {
+    @apply max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .ws-slot-content {
+    @apply flex h-full w-full flex-col items-center justify-center gap-0.5 overflow-hidden rounded-ws-control px-1 text-center;
+  }
+
+  .ws-slot-content > span:first-child {
     @apply max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
   }
 

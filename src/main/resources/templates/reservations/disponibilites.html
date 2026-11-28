@@ -48,6 +48,10 @@
             <span><span class="ws-legend-dot ws-legend-free" aria-hidden="true"></span>Disponible</span>
             <span><span class="ws-legend-dot ws-legend-busy" aria-hidden="true"></span>Réservée</span>
         </div>
+<div class="ws-slot-selection" th:attr="data-date-label=${dateLibelle}">
+    <p id="selection-message" aria-live="polite">Aucune plage sélectionnée.</p>
+    <button id="continuer-reservation" class="ws-pill ws-pill-primary" type="button" disabled>Continuer</button>
+</div>
         <div class="ws-schedule-scroll" tabindex="0" role="region"
              aria-label="Grille horaire, faites défiler horizontalement pour voir toutes les heures">
             <table class="ws-schedule-table">
@@ -65,14 +69,15 @@
                         <span class="ws-schedule-capacity" th:text="${salle.capacite} + ' places'"></span>
                     </th>
                     <td th:each="creneau : ${salle.heures}">
-                        <a th:if="${creneau.disponible}"
-                           class="ws-schedule-slot ws-slot-available"
-                           th:href="@{/reservations/nouvelle/formulaire(salleId=${salle.id},dateDebut=${creneau.dateDebut})}"
-                           th:attr="aria-label=${'Réserver ' + salle.nom + ' le ' + dateLibelle + ' à ' + creneau.heure}"
-                           th:title="${'Disponible à partir de ' + creneau.heure}">
-                            <span th:text="${creneau.heure}"></span>
-                            <span class="ws-slot-action">Choisir</span>
-                        </a>
+                            <label th:if="${creneau.disponible}" class="ws-schedule-slot cursor-pointer">
+                                <input type="checkbox" class="peer sr-only ws-slot-checkbox"
+                                       th:attr="data-room-id=${salle.id},data-room-name=${salle.nom},data-start=${creneau.dateDebut},data-time=${creneau.heure},aria-label=${'Choisir ' + salle.nom + ' le ' + dateLibelle + ' à ' + creneau.heure}"
+                                       th:title="${'Disponible à partir de ' + creneau.heure}">
+                                <span class="ws-slot-content ws-slot-available peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ws-accent peer-checked:bg-ws-primary peer-checked:text-ws-on-primary">
+                                    <span th:text="${creneau.heure}"></span>
+                                    <span class="ws-slot-action">Choisir</span>
+                                </span>
+                            </label>
                         <span th:if="${creneau.reservee}" class="ws-schedule-slot ws-slot-busy"
                               tabindex="0"
                               th:attr="aria-label=${creneau.description},title=${creneau.description}">
@@ -94,5 +99,96 @@
 </main>
 
 <footer th:replace="~{fragments/footer :: credits}"></footer>
+<script>
+(() => {
+    const boxes = [...document.querySelectorAll('.ws-slot-checkbox')];
+    const message = document.getElementById('selection-message');
+    const button = document.getElementById('continuer-reservation');
+    const selectionPanel = document.querySelector('.ws-slot-selection');
+    if (!boxes.length || !button || !selectionPanel) return;
+
+    let selected = [];
+    const byRoom = new Map();
+    boxes.forEach(box => {
+        const roomSlots = byRoom.get(box.dataset.roomId) || new Map();
+        roomSlots.set(box.dataset.start, box);
+        byRoom.set(box.dataset.roomId, roomSlots);
+    });
+    const toMinute = value => {
+        const [date, time] = value.split('T');
+        const [year, month, day] = date.split('-').map(Number);
+        const [hour, minute] = time.split(':').map(Number);
+        return Date.UTC(year, month - 1, day, hour, minute);
+    };
+    const updateLabel = box => {
+        const label = box.nextElementSibling.querySelector('.ws-slot-action');
+        if (label) label.textContent = box.checked ? 'Choisi' : 'Choisir';
+    };
+    const syncCheckboxes = () => {
+        const chosen = new Set(selected);
+        boxes.forEach(box => {
+            box.checked = chosen.has(box);
+            updateLabel(box);
+        });
+    };
+
+    const refresh = () => {
+        selected.sort((a, b) => a.dataset.start.localeCompare(b.dataset.start));
+        button.disabled = selected.length === 0;
+        if (!selected.length) {
+            message.textContent = 'Aucune plage sélectionnée.';
+            return;
+        }
+        const first = selected[0];
+        const last = selected[selected.length - 1];
+        const end = new Date(toMinute(last.dataset.start) + 60_000 * 60).toISOString().slice(0, 16);
+        message.textContent = `${first.dataset.roomName} · ${selectionPanel.dataset.dateLabel} · ${first.dataset.time}–${end.slice(11)} (${selected.length} h)`;
+        button.onclick = () => {
+            const params = new URLSearchParams({salleId: first.dataset.roomId, dateDebut: first.dataset.start, dateFin: end});
+            window.location.href = `/reservations/nouvelle/formulaire?${params}`;
+        };
+    };
+
+    boxes.forEach(box => box.addEventListener('change', () => {
+        if (box.checked) {
+            if (selected.length && box.dataset.roomId !== selected[0].dataset.roomId) {
+                box.checked = false;
+                updateLabel(box);
+                message.textContent = 'Choisissez les créneaux d’une seule salle.';
+                return;
+            }
+            const roomId = box.dataset.roomId;
+            const range = [...selected, box];
+            const firstMinute = Math.min(...range.map(item => toMinute(item.dataset.start)));
+            const lastMinute = Math.max(...range.map(item => toMinute(item.dataset.start)));
+            const roomSlots = byRoom.get(roomId);
+            const expanded = [];
+            for (let minute = firstMinute; minute <= lastMinute; minute += 3_600_000) {
+                const start = new Date(minute).toISOString().slice(0, 16);
+                const slot = roomSlots.get(start);
+                if (!slot) {
+                    box.checked = false;
+                    updateLabel(box);
+                    message.textContent = 'La plage traverse un créneau déjà réservé.';
+                    return;
+                }
+                expanded.push(slot);
+            }
+            if (!expanded.length) {
+                box.checked = false;
+                updateLabel(box);
+                return;
+            }
+            selected = expanded;
+            syncCheckboxes();
+        } else {
+            const cutoff = toMinute(box.dataset.start);
+            selected = selected.filter(item => toMinute(item.dataset.start) < cutoff);
+            syncCheckboxes();
+        }
+        refresh();
+    }));
+})();
+</script>
 </body>
 </html>
