@@ -12,7 +12,6 @@
   font-display: swap;
 }
 
-/* WorkSpace tokens from DESIGN.md. Edit these values to customize the site. */
 @theme {
   --color-ws-canvas: #090909;
   --color-ws-surface: #141414;
@@ -129,7 +128,7 @@
   }
 
   .ws-page {
-    @apply mx-auto grid w-full min-w-0 max-w-ws-page gap-ws-xl px-ws-lg py-ws-xxl
+    @apply mx-auto grid w-full min-w-0 max-w-ws-page grid-cols-[minmax(0,1fr)] gap-ws-xl px-ws-lg py-ws-xxl
       ws-tablet:px-ws-xl ws-tablet:py-16;
   }
 
@@ -219,11 +218,94 @@
     @apply border-t border-ws-line;
   }
 
+  .ws-schedule-legend {
+    @apply flex flex-wrap gap-x-ws-lg gap-y-ws-sm text-ws-small text-ws-muted;
+  }
+
+  .ws-schedule-legend > span {
+    @apply inline-flex items-center gap-2;
+  }
+
+  .ws-legend-dot {
+    @apply size-3 rounded-full;
+  }
+
+  .ws-legend-free {
+    @apply bg-ws-success;
+  }
+
+  .ws-legend-busy {
+    @apply bg-ws-coral;
+  }
+
+  .ws-legend-past {
+    @apply bg-ws-muted/50;
+  }
+
+  .ws-schedule-scroll {
+    @apply w-full min-w-0 max-w-full overflow-auto rounded-ws-control border border-ws-line;
+    max-height: min(52vh, 28rem);
+  }
+
+  .ws-schedule-table {
+    @apply min-w-max border-collapse text-center text-ws-caption tabular-nums;
+  }
+
+  .ws-schedule-table thead {
+    @apply sticky top-0 z-20 bg-ws-canvas;
+  }
+
+  .ws-schedule-table th,
+  .ws-schedule-table td {
+    @apply border border-ws-line px-1 py-1;
+  }
+
+  .ws-schedule-table th {
+    @apply min-w-16 font-medium text-ws-muted;
+  }
+
+  .ws-schedule-table .ws-schedule-room-heading,
+  .ws-schedule-table .ws-schedule-room {
+    @apply sticky left-0 z-10 min-w-40 bg-ws-surface px-ws-md text-left text-ws-ink;
+  }
+
+  .ws-schedule-table .ws-schedule-room-heading {
+    @apply z-30 bg-ws-canvas;
+  }
+
+  .ws-schedule-capacity {
+    @apply mt-1 block text-ws-caption text-ws-muted;
+  }
+
+  .ws-schedule-slot {
+    @apply flex h-11 min-w-16 max-w-full flex-col items-center justify-center gap-0.5 overflow-hidden rounded-ws-control px-1 text-center
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ws-accent;
+  }
+
+  .ws-schedule-slot > span:first-child {
+    @apply max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .ws-slot-available {
+    @apply bg-ws-success/15 text-ws-success hover:bg-ws-success/25;
+  }
+
+  .ws-slot-busy {
+    @apply cursor-help bg-ws-coral/20 text-ws-coral;
+  }
+
+  .ws-slot-past {
+    @apply bg-ws-raised text-ws-muted;
+  }
+
+  .ws-slot-action {
+    @apply text-[0.65rem] uppercase tracking-wide opacity-80;
+  }
+
   .ws-cell-label {
     @apply text-ws-muted ws-tablet:hidden;
   }
 
-  /* Keep the table associations on mobile while stacking each record visually. */
   @variant max-ws-tablet {
     .ws-table,
     .ws-table caption,
