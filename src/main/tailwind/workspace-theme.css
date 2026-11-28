@@ -238,10 +238,6 @@
     @apply bg-ws-coral;
   }
 
-  .ws-legend-past {
-    @apply bg-ws-muted/50;
-  }
-
   .ws-schedule-scroll {
     @apply w-full min-w-0 max-w-full overflow-auto rounded-ws-control border border-ws-line;
     max-height: min(52vh, 28rem);
@@ -292,10 +288,6 @@
 
   .ws-slot-busy {
     @apply cursor-help bg-ws-coral/20 text-ws-coral;
-  }
-
-  .ws-slot-past {
-    @apply bg-ws-raised text-ws-muted;
   }
 
   .ws-slot-action {

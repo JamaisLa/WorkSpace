@@ -1,6 +1,7 @@
 package com.workspace.controller;
 
 import com.workspace.dto.ReservationForm;
+import com.workspace.dto.SalleResume;
 import com.workspace.service.ReservationService;
 import com.workspace.service.SalleService;
 import jakarta.validation.Valid;
@@ -14,9 +15,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/reservations")
@@ -60,9 +68,42 @@ public class ReservationController {
     }
 
     @GetMapping("/nouvelle")
-    public String nouvelle(Model model) {
-        model.addAttribute("reservationForm", new ReservationForm());
-        preparerFormulaire(model);
+    public String nouvelle() {
+        return "redirect:/reservations/disponibilites";
+    }
+
+    @GetMapping("/disponibilites")
+    public String disponibilites(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            Model model) {
+        LocalDate aujourdHui = reservationService.aujourdHui();
+        LocalDate dateAffichee = date == null ? aujourdHui : date;
+        if (dateAffichee.isBefore(aujourdHui)) {
+            dateAffichee = aujourdHui;
+            model.addAttribute("error", "Choisissez aujourd’hui ou une date future.");
+        }
+        model.addAttribute("date", dateAffichee);
+        model.addAttribute("dateLibelle", DateTimeFormatter.ofPattern("EEEE d MMMM yyyy", Locale.FRENCH)
+                .format(dateAffichee));
+        model.addAttribute("dateMinimum", aujourdHui);
+        model.addAttribute("datePrecedente", dateAffichee.minusDays(1));
+        model.addAttribute("dateSuivante", dateAffichee.plusDays(1));
+        model.addAttribute("salles", reservationService.disponibilites(dateAffichee));
+        return "reservations/disponibilites";
+    }
+
+    @GetMapping("/nouvelle/formulaire")
+    public String formulaire(@RequestParam(required = false) Long salleId,
+                             @RequestParam(required = false)
+                             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime dateDebut,
+                             Model model) {
+        ReservationForm form = new ReservationForm();
+        form.setSalleId(salleId);
+        form.setDateDebut(dateDebut);
+        form.setDateFin(dateDebut == null ? null : dateDebut.plusHours(1));
+        model.addAttribute("reservationForm", form);
+        preparerFormulaire(model, dateDebut == null ? reservationService.aujourdHui() : dateDebut.toLocalDate());
+        preparerCreneauChoisi(model, salleId, dateDebut);
         return "reservations/form";
     }
 
@@ -78,12 +119,33 @@ public class ReservationController {
                 erreurs.reject("reservation.invalid", exception.getReason());
             }
         }
-        preparerFormulaire(model);
+        LocalDate dateRetour = reservationForm.getDateDebut() == null
+                ? reservationService.aujourdHui() : reservationForm.getDateDebut().toLocalDate();
+        preparerFormulaire(model, dateRetour);
+        preparerCreneauChoisi(model, reservationForm.getSalleId(), reservationForm.getDateDebut());
         return "reservations/form";
     }
 
-    private void preparerFormulaire(Model model) {
+    private void preparerFormulaire(Model model, LocalDate dateRetour) {
         model.addAttribute("salles", salleService.rechercher("", 0));
         model.addAttribute("equipements", reservationService.equipementsReservables());
+        model.addAttribute("dateMinimum", reservationService.aujourdHui());
+        model.addAttribute("dateHeureMinimum", reservationService.maintenant()
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
+        model.addAttribute("dateRetour", dateRetour);
+    }
+
+    private void preparerCreneauChoisi(Model model, Long salleId, LocalDateTime dateDebut) {
+        SalleResume salle = salleId == null ? null : salleService.rechercher("", 0).stream()
+                .filter(candidate -> candidate.id().equals(salleId))
+                .findFirst().orElse(null);
+        boolean choisi = salle != null && dateDebut != null;
+        model.addAttribute("creneauChoisi", choisi);
+        if (choisi) {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("EEEE d MMMM yyyy 'à' HH:mm", Locale.FRENCH);
+            model.addAttribute("salleChoisie", salle);
+            model.addAttribute("debutChoisi", format.format(dateDebut));
+            model.addAttribute("finChoisie", format.format(dateDebut.plusHours(1)));
+        }
     }
 }

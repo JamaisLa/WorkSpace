@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Disponibilités des salles — WorkSpace</title>
+</head>
+<body class="ws-body">
+<th:block th:replace="~{fragments/navigation :: header(true, 'reservations')}"></th:block>
+
+<main id="contenu" tabindex="-1" class="ws-page">
+    <a th:href="@{/reservations}" class="ws-link-inline text-sm">Retour à mes réservations</a>
+    <div class="ws-page-heading">
+        <div>
+            <h1 class="ws-page-title">Disponibilités des salles</h1>
+            <p class="mt-3 text-ws-muted" th:text="${dateLibelle}"></p>
+        </div>
+        <form method="get" th:action="@{/reservations/disponibilites}" class="flex flex-wrap items-end gap-ws-sm">
+            <div>
+                <label for="date" class="ws-label">Choisir une date</label>
+                <input id="date" name="date" type="date" class="ws-field"
+                       th:value="${date}" th:attr="min=${dateMinimum}" required>
+            </div>
+            <button class="ws-pill ws-pill-secondary" type="submit">Afficher</button>
+        </form>
+    </div>
+
+    <p th:if="${error}" th:text="${error}" role="alert" class="ws-alert"></p>
+
+    <div class="flex flex-wrap items-center justify-between gap-ws-md">
+        <div class="flex flex-wrap items-center gap-ws-sm">
+            <a th:if="${date.isAfter(dateMinimum)}"
+               th:href="@{/reservations/disponibilites(date=${datePrecedente})}"
+               class="ws-pill ws-pill-secondary">← Jour précédent</a>
+            <span th:unless="${date.isAfter(dateMinimum)}" class="ws-pill ws-pill-secondary opacity-50"
+                  aria-disabled="true">← Jour précédent</span>
+            <a th:href="@{/reservations/disponibilites(date=${dateSuivante})}"
+               class="ws-pill ws-pill-secondary">Jour suivant →</a>
+        </div>
+        <p class="text-ws-small text-ws-muted">Sélectionnez une heure disponible pour commencer votre réservation.</p>
+    </div>
+
+<section th:if="${!#lists.isEmpty(salles)}" aria-label="Grille des disponibilités par salle">
+<p th:if="${#lists.isEmpty(salles[0].heures)}" class="text-ws-muted">Il n’y a plus de créneau disponible pour cette journée.</p>
+<th:block th:unless="${#lists.isEmpty(salles[0].heures)}">
+        <div class="ws-schedule-legend" aria-label="Légende">
+            <span><span class="ws-legend-dot ws-legend-free" aria-hidden="true"></span>Disponible</span>
+            <span><span class="ws-legend-dot ws-legend-busy" aria-hidden="true"></span>Réservée</span>
+        </div>
+        <div class="ws-schedule-scroll" tabindex="0" role="region"
+             aria-label="Grille horaire, faites défiler horizontalement pour voir toutes les heures">
+            <table class="ws-schedule-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="ws-schedule-room-heading">Salles</th>
+<th scope="col" th:each="creneau : ${salles[0].heures}"
+ th:text="${creneau.heure}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="salle : ${salles}">
+                    <th scope="row" class="ws-schedule-room">
+                        <span class="font-medium" th:text="${salle.nom}"></span>
+                        <span class="ws-schedule-capacity" th:text="${salle.capacite} + ' places'"></span>
+                    </th>
+                    <td th:each="creneau : ${salle.heures}">
+                        <a th:if="${creneau.disponible}"
+                           class="ws-schedule-slot ws-slot-available"
+                           th:href="@{/reservations/nouvelle/formulaire(salleId=${salle.id},dateDebut=${creneau.dateDebut})}"
+                           th:attr="aria-label=${'Réserver ' + salle.nom + ' le ' + dateLibelle + ' à ' + creneau.heure}"
+                           th:title="${'Disponible à partir de ' + creneau.heure}">
+                            <span th:text="${creneau.heure}"></span>
+                            <span class="ws-slot-action">Choisir</span>
+                        </a>
+                        <span th:if="${creneau.reservee}" class="ws-schedule-slot ws-slot-busy"
+                              tabindex="0"
+                              th:attr="aria-label=${creneau.description},title=${creneau.description}">
+                            <span th:text="${#strings.isEmpty(creneau.plageReservee) ? 'Réservée' : creneau.plageReservee}"></span>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="mt-3 text-ws-caption text-ws-muted">Les cases réservées indiquent les heures de début et de fin au survol ou au focus.</p>
+</th:block>
+    </section>
+
+    <section th:if="${#lists.isEmpty(salles)}" class="ws-panel grid justify-items-center gap-3 p-ws-xl text-center">
+        <h2 class="ws-section-title">Aucune salle disponible dans le système</h2>
+        <p class="text-ws-muted">Les salles apparaîtront ici dès qu’elles auront été ajoutées.</p>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: credits}"></footer>
+</body>
+</html>

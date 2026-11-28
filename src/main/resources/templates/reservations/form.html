@@ -10,19 +10,28 @@
 <th:block th:replace="~{fragments/navigation :: header(true, 'reservations')}"></th:block>
 
 <main id="contenu" tabindex="-1" class="ws-page max-w-ws-form">
-    <a th:href="@{/reservations}" class="ws-link-inline text-sm">Retour à mes réservations</a>
+    <a th:href="@{/reservations/disponibilites(date=${dateRetour})}" class="ws-link-inline text-sm">← Retour aux disponibilités</a>
     <h1 class="ws-page-title">Nouvelle réservation</h1>
     <form method="post" th:action="@{/reservations}" th:object="${reservationForm}"
           class="ws-panel grid gap-5 p-6 sm:p-8">
         <div th:if="${#fields.hasGlobalErrors()}" role="alert" class="ws-alert">
             <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
         </div>
+        <section th:if="${creneauChoisi}" class="grid gap-2 rounded-ws-control border border-ws-line bg-ws-canvas p-ws-lg">
+            <h2 class="ws-section-title">Créneau sélectionné</h2>
+            <p><span class="font-medium" th:text="${salleChoisie.nom}"></span>
+                <span class="text-ws-muted" th:text="${' · ' + salleChoisie.capacite + ' places'}"></span></p>
+            <p class="text-ws-muted" th:text="${debutChoisi + ' – ' + finChoisie}"></p>
+            <input type="hidden" th:field="*{salleId}">
+            <input type="hidden" th:field="*{dateDebut}">
+            <input type="hidden" th:field="*{dateFin}">
+        </section>
         <div>
-            <label for="objet" class="ws-label">Objet de la réunion</label>
+            <label for="objet" class="ws-label">Nom de la réunion</label>
             <input id="objet" th:field="*{objet}" class="ws-field" th:errorclass="ws-field-invalid" maxlength="200" required>
             <p th:errors="*{objet}" class="ws-field-error"></p>
         </div>
-        <div>
+        <div th:unless="${creneauChoisi}">
             <label for="salleId" class="ws-label">Salle</label>
             <select id="salleId" th:field="*{salleId}" class="ws-field" th:errorclass="ws-field-invalid" required>
                 <option value="">Choisir une salle</option>
@@ -32,17 +41,17 @@
             </select>
             <p th:errors="*{salleId}" class="ws-field-error"></p>
         </div>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div th:unless="${creneauChoisi}" class="grid gap-4 sm:grid-cols-2">
             <div>
                 <label for="dateDebut" class="ws-label">Début</label>
                 <input id="dateDebut" type="datetime-local" th:field="*{dateDebut}"
-                       class="ws-field" th:errorclass="ws-field-invalid" required>
+                       class="ws-field" th:errorclass="ws-field-invalid" th:attr="min=${dateHeureMinimum}" required>
                 <p th:errors="*{dateDebut}" class="ws-field-error"></p>
             </div>
             <div>
                 <label for="dateFin" class="ws-label">Fin</label>
                 <input id="dateFin" type="datetime-local" th:field="*{dateFin}"
-                       class="ws-field" th:errorclass="ws-field-invalid" required>
+                       class="ws-field" th:errorclass="ws-field-invalid" th:attr="min=${dateHeureMinimum}" required>
                 <p th:errors="*{dateFin}" class="ws-field-error"></p>
             </div>
         </div>

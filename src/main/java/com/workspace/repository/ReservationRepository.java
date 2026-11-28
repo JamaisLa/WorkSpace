@@ -14,6 +14,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findAllByOrderByDateDebutAsc();
 
+    List<Reservation> findAllByDateDebutLessThanAndDateFinGreaterThanOrderByDateDebutAsc(
+            LocalDateTime fin, LocalDateTime debut);
+
     boolean existsBySalle_IdAndDateDebutLessThanAndDateFinGreaterThan(
             Long salleId, LocalDateTime dateFin, LocalDateTime dateDebut);
 
