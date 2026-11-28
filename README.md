@@ -39,7 +39,6 @@ Compte administrateur initial : identifiant `admin`, mot de passe `admin`.
 
 Le CSS généré par Tailwind est ignoré par Git. Après un nouveau clone, installez les dépendances et compilez le CSS avant de lancer l’application ou de construire le JAR. Relancez `npm run build:css` après une modification des sources Tailwind ou des classes Tailwind dans les templates.
 
-La palette, les dégradés, la typographie et les composants partagés se personnalisent dans [workspace-theme.css](src/main/tailwind/workspace-theme.css), en suivant le guide [DESIGN.md](DESIGN.md).
 
 Sous Linux/macOS :
 
